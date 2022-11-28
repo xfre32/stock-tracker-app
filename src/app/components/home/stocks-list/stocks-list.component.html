@@ -1,0 +1,46 @@
+<div *ngIf="stockList$ | async as stockList" class="container-fluid">
+    <div class="row">
+        <div *ngFor="let stock of stockList" class="col-12 col-md-6">
+            <div *ngIf="stock.isLoaded !== true" class="card mb-5">
+                <div class="card-body">
+                    <div class="row mt-3">
+                        <h5>Just a sec...</h5>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="stock.isLoaded" class="card shadow-lg p-4 mb-5 bg-body rounded">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-11">
+                            <h4 class="text-center">{{stock.data?.name}} ({{stock.symbol}})</h4>
+                        </div>
+                        <div [id]="'remove' + stock.symbol" class="col-1" (click)="removeStock(stock)">
+                            <img src="../../../../assets/closeFilled.svg" alt="close button" width="25px">
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-8">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    Change today:{{ (stock.data?.percentChange || 0) > 0 ? '+' : '' }} 
+                                    {{stock.data?.percentChange | number: '1.2-3'}}%</li>
+                                <li class="list-group-item">Opening Price: {{stock.data?.openingPrice | currency}}</li>
+                                <li class="list-group-item">Current Price: {{stock.data?.currentPrice | currency}}</li>
+                                <li class="list-group-item">High Price: {{stock.data?.highPrice | currency}}</li>
+                            </ul>
+                        </div>
+                        <div *ngIf="(stock.data?.percentChange || 0) > 0" class="col-4 align-self-center">
+                            <img src="../../../../assets/upTrend.svg" alt="Positive trend" class="img-fluid">
+                        </div>
+                        <div *ngIf="(stock.data?.percentChange || 0) < 0" class="col-4 align-self-center">
+                            <img src="../../../../assets/downTrend.svg" alt="Negative trend" class="img-fluid">
+                        </div>
+                        <button [routerLink]="['/sentiment', stock.symbol]" [id]="'sentiment' + stock.symbol" 
+                        class="btn btn-outline-primary mt-3">Go to social sentiment details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

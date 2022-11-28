@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8">
+            <div class="card shadow-lg p-4 mb-5 bg-body rounded">
+                <div class="card-body">
+                    <h1 class="text-primary text-center">STOCK TRACKER</h1>
+                    <p class="lead text-center">Enter the symbol of a stock to track (i.e. AAPL, GOOGL, TSLA)</p>
+                    <div class="row ms-4 g-3 justify-content-center mb-3">
+                        <div class="col-9">
+                            <input id="stockInput" type="text" class="form-control" [(ngModel)]="stockInput">
+                        </div>
+                        <div class="col-3">
+                            <button id="trackBtn" class="btn btn-primary"  
+                            (click)="trackStock(stockInput)">Track Stock</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-stocks-list></app-stocks-list>
+    <footer>
+        <p class="lead text-center">Built with <span class="text-danger">Angular</span> &copy;Sujit Aluru</p>
+    </footer>
+</div>
