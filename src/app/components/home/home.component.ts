@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
         const currentSearchedSymbols = this.localStorage.getData('searched_symbols');
 
         if (_.find(currentSearchedSymbols, (searchedSymbol) => searchedSymbol === stockInput)) {
-            alert(`${stockInput} already exists in stock list`);
+            alert(`${stockInput} has already been added to watchlist`);
           } else {
             if (currentSearchedSymbols) {
               this.localStorage.saveData('searched_symbols', [...currentSearchedSymbols, stockInput]);

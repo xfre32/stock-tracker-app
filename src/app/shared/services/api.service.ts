@@ -8,22 +8,25 @@ import { InsiderSentiment } from "../interfaces/insider-sentiment.interface";
 
 @Injectable({providedIn: 'root'})
 export class ApiService{
+    private endPoint: string = 'https://finnhub.io/api/v1';
+    private apiKey: string = 'bu4f8kn48v6uehqi3cqg';
+    
     constructor(private http: HttpClient) {}
 
     searchStock(symbol: string): Observable<StockSearch>{
         return this.http.get<StockSearch>(
-            `${environment.endPoint}/search?q=${symbol}&token=${environment.apiKey}`);
+            `${this.endPoint}/search?q=${symbol}&token=${this.apiKey}`);
     }
 
     getQuote(symbol: string): Observable<Quote>{
         return this.http.get<Quote>(
-            `${environment.endPoint}/quote?symbol=${symbol}&token=${environment.apiKey}`
+            `${this.endPoint}/quote?symbol=${symbol}&token=${this.apiKey}`
         );
     }
 
     getInsiderSentiment(symbol: string, duration: {from: string; to: string}): Observable<InsiderSentiment> {
         return this.http.get<InsiderSentiment>(
-            `${environment.endPoint}/stock/insider-sentiment?symbol=${symbol}&from=${duration.from}&to=${duration.to}&token=${environment.apiKey}`
+            `${this.endPoint}/stock/insider-sentiment?symbol=${symbol}&from=${duration.from}&to=${duration.to}&token=${this.apiKey}`
         );
     }
 }
