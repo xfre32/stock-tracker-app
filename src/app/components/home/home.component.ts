@@ -13,24 +13,24 @@ export class HomeComponent implements OnInit {
 
     public trackStock(stockInput: string): void{
         console.log(stockInput)
-        const currentSearchedSymbols = this.localStorage.getData('searched_symbols');
+        const currentSearchedSymbols = this.localStorage.getData('watchlist');
 
         if (_.find(currentSearchedSymbols, (searchedSymbol) => searchedSymbol === stockInput)) {
             alert(`${stockInput} has already been added to watchlist`);
           } else {
             if (currentSearchedSymbols) {
-              this.localStorage.saveData('searched_symbols', [...currentSearchedSymbols, stockInput]);
+              this.localStorage.saveData('watchlist', [...currentSearchedSymbols, stockInput]);
             } else {
-              this.localStorage.saveData('searched_symbols', [stockInput]);
+              this.localStorage.saveData('watchlist', [stockInput]);
             }
             this.stockList.addStock(stockInput);
           }
-      
+
           this.stockInput = '';
     }
 
     ngOnInit(): void {
-        
+
     }
 
 }

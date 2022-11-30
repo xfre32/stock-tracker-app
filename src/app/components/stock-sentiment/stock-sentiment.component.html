@@ -4,23 +4,24 @@
             <div class="col-12 col-md-9">
                 <div class="card shadow-lg p-4 mb-5 bg-body rounded">
                     <div class="card-body">
-                        <h1 class="text-center">{{sentiment.name}} ({{sentiment.symbol}})</h1>
+                        <h1 class="text-center text-primary">{{sentiment.name}} ({{sentiment.symbol}})</h1>
                         <div class="row mt-5">
                             <div *ngFor="let data of sentiment.data" class="col-4">
                                 <div class="row">
                                     <h4 class="text-secondary ms-3">{{data.month | month}}</h4>
                                     <div class="col-8 mb-3">
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">Change: {{(data.change || 0) > 0 ? '+' : ''}}{{data.change}}</li>
-                                            <li class="list-group-item">MSPR: {{data.mspr  | number: "1.2-3"}}</li>
+                                            <li class="list-group-item"><span class="text-secondary">Change: </span>{{(data.change || 0) > 0 ? '+' : ''}}{{data.change}}</li>
+                                            <li class="list-group-item"><span class="text-secondary">MSPR: </span>{{data.mspr  | number: "1.2-3"}}</li>
                                         </ul>
                                     </div>
-                                    <div *ngIf="(data.change || 0) > 0" class="col-4 align-self-center">
-                                        <img src="../../../assets/upTrend.svg" alt="trend up" class="img-responsive">
+                                    <div *ngIf="(data.change || 0) > 0" class="col-3">
+                                        <img src="assets/upTrend.svg" alt="trend up" class="img-fluid">
                                     </div>
-                                    <div *ngIf="(data.change || 0) < 0" class="col-4 align-self-center">
-                                        <img src="../../../assets/downTrend.svg" alt="trend down" class="img-responsive">
+                                    <div *ngIf="(data.change || 0) < 0" class="col-3">
+                                        <img src="assets/downTrend.svg" alt="trend down" class="img-fluid">
                                     </div>
+                                    <div class="col-1"></div>
                                 </div>
                             </div>
                         </div>
@@ -29,6 +30,6 @@
                 <button id="backBtn" [routerLink]="['/']" class="btn btn-primary"><b>&lt;</b> Back to list of stocks</button>
             </div>
         </div>
-    </div>    
+    </div>
 </ng-container>
-<ng-template #placeholder>Just a sec...</ng-template>
+<ng-template #placeholder><h3 class="text-center mt-5">Just a sec...</h3></ng-template>

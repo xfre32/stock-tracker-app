@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { merge, Observable } from "rxjs";
 import { Stock } from "src/app/shared/interfaces/stock.interface";
 import { LocalStorageService } from "src/app/shared/services/local-storage.service";
-import { StocksListExtractorService } from "./stocks-list-Extractor.service";
+import { StocksListExtractorService } from "./stocks-list-extractor.service";
 import { StocksListSaveService } from "./stocks-list-save.service";
 
 @Injectable({providedIn: 'root'})
@@ -11,7 +11,7 @@ export class StocksListControllerService {
     constructor(private save: StocksListSaveService, private extractor: StocksListExtractorService, private localStorage: LocalStorageService) {}
 
     public createStockList(): void {
-        const createStockList = this.extractor.createStockList(this.localStorage.getData('searched_symbols'));
+        const createStockList = this.extractor.createStockList(this.localStorage.getData('watchlist'));
         this.setStockList(createStockList);
         this.loadStockList(createStockList)
     }
@@ -31,13 +31,13 @@ export class StocksListControllerService {
     public addStock(symbol: string): void{
         const stockList = this.getStockList();
         this.setStockList([...stockList, {symbol: symbol, isLoaded: false}]);
-        this.extractor.extractStock(symbol).subscribe((newStock) => this.updateStockList(newStock));        
+        this.extractor.extractStock(symbol).subscribe((newStock) => this.updateStockList(newStock));
     }
 
     public removeStock(removedStock: Stock): void{
-        const searchedSymbols = this.localStorage.getData('searched_symbols');
+        const searchedSymbols = this.localStorage.getData('watchlist');
         _.remove(searchedSymbols, (symbol) => symbol === removedStock.symbol);
-        this.localStorage.saveData('searched_symbols', searchedSymbols);
+        this.localStorage.saveData('watchlist', searchedSymbols);
 
         const stocksList = this.getStockList();
         _.remove(stocksList, (stock) => stock === removedStock);

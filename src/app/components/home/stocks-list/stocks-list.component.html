@@ -1,5 +1,7 @@
 <div *ngIf="stockList$ | async as stockList" class="container-fluid">
     <div class="row">
+      <h2 *ngIf="stockList.length === 0" class="text-center text-secondary">YOUR WATCHLIST IS EMPTY</h2>
+      <h2 *ngIf="stockList.length > 0" class="text-center text-secondary mb-4">YOUR WATCHLIST</h2>
         <div *ngFor="let stock of stockList" class="col-12 col-md-4">
             <div *ngIf="stock.isLoaded !== true" class="card mb-5">
                 <div class="card-body">
@@ -12,31 +14,32 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-11">
-                            <h5 class="text-center">{{stock.data?.name}} ({{stock.symbol}})</h5>
+                            <h5 class="text-center text-primary">{{stock.data?.name}} ({{stock.symbol}})</h5>
                         </div>
                         <div [id]="'remove' + stock.symbol" class="col-1 align-self-start" (click)="removeStock(stock)">
                             <img src="../../../../assets/closeFilled.svg" alt="close button" width="18px">
                         </div>
                     </div>
-                    
+
                     <div class="row mt-3">
                         <div class="col-9">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
-                                    Change today:{{ (stock.data?.percentChange || 0) > 0 ? '+' : '' }} 
+                                    <span class="text-secondary">Change today: </span>{{ (stock.data?.percentChange || 0) > 0 ? '+' : '' }}
                                     {{stock.data?.percentChange | number: '1.2-3'}}%</li>
-                                <li class="list-group-item">Opening Price: {{stock.data?.openingPrice | currency}}</li>
-                                <li class="list-group-item">Current Price: {{stock.data?.currentPrice | currency}}</li>
-                                <li class="list-group-item">High Price: {{stock.data?.highPrice | currency}}</li>
+                                <li class="list-group-item"><span class="text-secondary">Opening Price: </span>{{stock.data?.openingPrice | currency}}</li>
+                                <li class="list-group-item"><span class="text-secondary">Current Price: </span>{{stock.data?.currentPrice | currency}}</li>
+                                <li class="list-group-item"><span class="text-secondary">High Price: </span>{{stock.data?.highPrice | currency}}</li>
                             </ul>
                         </div>
                         <div *ngIf="(stock.data?.percentChange || 0) > 0" class="col-3 align-self-center">
-                            <img src="../../../../assets/upTrend.svg" alt="Positive trend" class="img-fluid">
+                            <img src="assets/upTrend.svg" alt="Positive trend" class="img-fluid">
                         </div>
                         <div *ngIf="(stock.data?.percentChange || 0) < 0" class="col-3 align-self-center">
-                            <img src="../../../../assets/downTrend.svg" alt="Negative trend" class="img-fluid">
+                            <img src="assets/downTrend.svg" alt="Negative trend" class="img-fluid">
                         </div>
-                        <button [routerLink]="['/sentiment', stock.symbol]" [id]="'sentiment' + stock.symbol" 
+                        <div class="col-1"></div>
+                        <button [routerLink]="['/sentiment', stock.symbol]" [id]="'sentiment' + stock.symbol"
                         class="btn btn-outline-primary mt-3"><b>Go to social sentiment details  &gt;</b></button>
                     </div>
                 </div>
