@@ -1,4 +1,4 @@
-# StockTrackerApp
+# [Stock Tracker app ](https://xfre32.github.io/stock-tracker-app/)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.
 
