@@ -29,8 +29,6 @@ export class HomeComponent implements OnInit {
           this.stockInput = '';
     }
 
-    ngOnInit(): void {
-
-    }
+    ngOnInit(): void {}
 
 }
