@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http"
 import { Observable } from "rxjs";
 import { StockSearch } from "../interfaces/stock-search.interface";
-import { environment } from "src/environments/environment";
 import { Quote } from "../interfaces/quote.interface";
 import { InsiderSentiment } from "../interfaces/insider-sentiment.interface";
 
