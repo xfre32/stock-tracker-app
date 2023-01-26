@@ -1,0 +1,10 @@
+p {
+  font-family: 'Inconsolata', monospace;
+  letter-spacing: 0.2rem;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+span {
+  color: #c3002f;
+}

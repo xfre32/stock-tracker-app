@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'stock-tracker-app';
+  date = new Date();
+  year = this.date.getFullYear();
 }

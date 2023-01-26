@@ -1,6 +1,10 @@
 <div class="container-fluid">
-  <router-outlet></router-outlet>
-  <footer class="mt-3">
-    <p class="lead text-center">Built with <span class="text-danger">Angular</span> &copy;Sujit Aluru</p>
-  </footer>
+  <div class="row">
+    <div class="col-12">
+      <router-outlet></router-outlet>
+      <footer class="mt-5 container">
+        <p class="text-secondary lead text-center">Built with <span>Angular</span> | Copyright &copy; 2022 - {{year}} Sujit Aluru</p>
+      </footer>
+    </div>
+  </div>
 </div>
