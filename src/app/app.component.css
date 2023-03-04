@@ -1,3 +1,7 @@
+hr {
+  opacity: 0.15;
+}
+
 p {
   font-family: 'Inconsolata', monospace;
   letter-spacing: 0.2rem;

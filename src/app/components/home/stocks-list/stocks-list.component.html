@@ -1,7 +1,7 @@
 <div *ngIf="stockList$ | async as stockList" class="container-fluid">
     <div class="row">
-      <h2 *ngIf="stockList.length === 0" class="text-center text-secondary">YOUR WATCHLIST IS EMPTY</h2>
-      <h2 *ngIf="stockList.length > 0" class="text-center text-secondary mb-4">YOUR WATCHLIST</h2>
+      <h2 *ngIf="stockList.length === 0" class="text-center text-secondary">YOUR WATCHLIST IS <span class="text-danger">EMPTY</span></h2>
+      <h2 *ngIf="stockList.length > 0" class="text-center text-secondary mb-4">YOUR WATCHLIST HAS <span class="text-primary">{{stockList.length}}</span> ITEM(S)</h2>
         <div *ngFor="let stock of stockList" class="col-12 col-md-4">
             <div *ngIf="stock.isLoaded !== true" class="card mb-5">
                 <div class="card-body">

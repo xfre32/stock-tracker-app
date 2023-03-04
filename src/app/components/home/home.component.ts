@@ -11,14 +11,15 @@ export class HomeComponent implements OnInit {
     public stockInput: string = '';
     constructor(private localStorage: LocalStorageService, private stockList: StocksListControllerService) {}
 
+    ngOnInit(): void {}
+
     public trackStock(stockInput: string): void{
         if(stockInput.length > 0) {
-          console.log(stockInput)
           const currentSearchedSymbols = this.localStorage.getData('watchlist');
-
           if (_.find(currentSearchedSymbols, (searchedSymbol) => searchedSymbol === stockInput)) {
             alert(`${stockInput} has already been added to watchlist`);
-          } else {
+          }
+          else {
             if (currentSearchedSymbols) {
               this.localStorage.saveData('watchlist', [...currentSearchedSymbols, stockInput]);
             } else {
@@ -26,15 +27,10 @@ export class HomeComponent implements OnInit {
             }
             this.stockList.addStock(stockInput);
           }
-
           this.stockInput = '';
         }
-
         else {
-          alert('No data entered')
+          alert('Enter a Symbol')
         }
     }
-
-    ngOnInit(): void {}
-
 }

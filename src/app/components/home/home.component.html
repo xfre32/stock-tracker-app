@@ -1,18 +1,20 @@
 <div class="container">
     <div class="row justify-content-center mt-5">
-        <div class="col-12 col-md-10">
-            <div class="card shadow-lg p-4 mb-5 bg-body rounded">
+        <div class="col-12 col-md-6">
+            <div class="card shadow-lg py-4 px-0 mb-5 bg-body rounded">
                 <div class="card-body">
                     <h1 class="text-primary text-center" style="letter-spacing: 0.4rem;">STOCK TRACKER</h1>
-                    <p class="lead text-center">Enter the symbol of a stock to track (i.e. AAPL, GOOGL, TSLA)</p>
+                    <p class="lead text-center">Enter the symbol of a stock to track</p>
                     <div class="row ms-4 g-3 justify-content-center mb-3">
-                        <div class="col-9">
-                            <input oninput="this.value = this.value.toUpperCase()" id="stockInput" type="text" class="form-control" [(ngModel)]="stockInput" maxlength="5" required>
+                        <div class="col-1"></div>
+                        <div class="col-7">
+                            <input oninput="this.value = this.value.toUpperCase()" id="stockInput" type="text" placeholder="i.e. AAPL, GOOGL, TSLA" class="form-control" [(ngModel)]="stockInput" maxlength="5" required>
                         </div>
                         <div class="col-3">
                             <button id="trackBtn" class="btn btn-primary"
                             (click)="trackStock(stockInput)">Track Stock</button>
                         </div>
+                        <div class="col-1"></div>
                     </div>
                 </div>
             </div>
