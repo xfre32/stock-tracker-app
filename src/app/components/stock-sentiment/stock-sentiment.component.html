@@ -3,9 +3,14 @@
         <div class="row mt-5 justify-content-center">
             <div class="col-12 col-md-10">
               <h1 class="h1 text-center text-secondary">INSIDER SENTIMENT DETAILS</h1>
-                <div class="card shadow-lg px-4 py-3 mt-4 mb-4 bg-body rounded">
+                <div class="card shadow-lg px-4 py-3 mt-5 mb-4 bg-body rounded">
                   <div class="card-header bg-white">
-                    <h2 class="text-center text-primary">{{sentiment.name}} ({{sentiment.symbol}})</h2>
+                    <h1 class="text-center text-primary mt-2">
+                      {{sentiment.name}}
+                      <span class="px-5 position-absolute top-0 start-50 translate-middle badge bg-gradient bg-primary">
+                        {{sentiment.symbol}}
+                      </span>
+                    </h1>
                   </div>
                     <div class="card-body">
                         <div class="row mt-2">
@@ -30,9 +35,16 @@
                         </div>
                     </div>
                 </div>
-                <button id="backBtn" [routerLink]="['/']" class="btn btn-primary"><b>&lt;</b> Back to list of stocks</button>
+                <button id="backBtn" [routerLink]="['/']" class="btn btn-primary bg-gradient"><b>&lt;</b> Back to list of stocks</button>
             </div>
         </div>
     </div>
 </ng-container>
-<ng-template #placeholder><h3 class="text-center mt-5">Just a sec...</h3></ng-template>
+<ng-template #placeholder>
+  <h3 class="text-center mt-5">Just a sec...</h3>
+  <div class="row justify-content-center mt-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
