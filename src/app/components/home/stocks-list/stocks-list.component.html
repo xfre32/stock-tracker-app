@@ -1,84 +1,92 @@
 <div *ngIf="stockList$ | async as stockList" class="container-fluid">
-    <div class="row">
-      <h2 *ngIf="stockList.length === 0" class="text-center text-secondary">YOUR WATCHLIST IS <span class="text-danger">EMPTY</span></h2>
-      <h2 *ngIf="stockList.length > 0" class="text-center text-secondary mb-4">YOUR WATCHLIST HAS <span class="text-primary">{{stockList.length}}</span> ITEM(S)</h2>
-        <div *ngFor="let stock of stockList" class="col-12 col-md-4">
+  <div class="row">
+    <h2 *ngIf="stockList.length === 0" class="text-center text-secondary">YOUR WATCHLIST IS <span class="text-danger">EMPTY</span>
+    </h2>
+    <h2 *ngIf="stockList.length > 0" class="text-center text-secondary mb-4">YOUR WATCHLIST HAS <span
+      class="text-primary">{{stockList.length}}</span> ITEM(S)</h2>
+    <div *ngFor="let stock of stockList" class="col-12 col-md-4">
 
-            <!--placeholder template-->
-            <div *ngIf="stock.isLoaded !== true" class="card shadow-lg p-4 mb-5 bg-body rounded">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-11">
-                    <h5 class="text-start ps-3 text-primary placeholder-glow">
-                      <span class="placeholder col-10"></span>
-                    </h5>
-                    <h6 class="text-start ps-3 text-primary placeholder-glow">
-                      <span class="placeholder col-2"></span>
-                    </h6>
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-8">
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item placeholder-glow">
-                        <span class="text-secondary placeholder col-10"></span>
-                      </li>
-                      <li class="list-group-item placeholder-glow">
-                        <span class="text-secondary placeholder col-10"></span>
-                      </li>
-                      <li class="list-group-item placeholder-glow">
-                        <span class="text-secondary placeholder col-9"></span>
-                      </li>
-                      <li class="list-group-item placeholder-glow">
-                        <span class="text-secondary placeholder col-8"></span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-1"></div>
-                  <div class="col-3 align-self-center placeholder text-secondary">
-                    <img src="" alt="" class="text-secondary placeholder col-12">
-                    <img src="" alt="" class="text-secondary placeholder col-12">
-                  </div>
-                </div>
-              </div>
-              <button tabindex="-1" class="btn btn-outline-primary mt-2 placeholder col-12"></button>
+      <!--placeholder template-->
+      <div *ngIf="stock.isLoaded !== true" class="card shadow-lg p-4 mb-4 bg-body rounded">
+        <div class="card-body my-0 py-0">
+          <div class="row">
+            <div class="col-11">
+              <h5 class="text-start ps-3 text-primary placeholder-glow">
+                <span class="placeholder col-10"></span>
+              </h5>
+              <h6 class="text-start ps-3 text-primary placeholder-glow">
+                <span class="placeholder col-2"></span>
+              </h6>
             </div>
-            <!--placeholder template-->
-
-            <div *ngIf="stock.isLoaded" class="card shadow-lg p-4 mb-5 bg-body rounded">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-11">
-                            <h5 class="text-start ps-3 text-primary">{{stock.data?.name}}</h5>
-                            <h6 class="text-start ps-3"><span class="badge bg-gradient bg-primary">{{stock.symbol}}</span></h6>
-                        </div>
-                        <a [id]="'remove' + stock.symbol" class="col-1 align-self-start" (click)="removeStock(stock)">
-                          <button type="button" class="btn-close" aria-label="Close"></button>
-                        </a>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-9">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <span class="text-secondary">Change today: </span>{{ (stock.data?.percentChange || 0) > 0 ? '+' : '' }}{{stock.data?.percentChange | number: '1.2-2'}}%</li>
-                                <li class="list-group-item"><span class="text-secondary">Opening Price: </span>{{stock.data?.openingPrice | currency}}</li>
-                                <li class="list-group-item"><span class="text-secondary">Current Price: </span>{{stock.data?.currentPrice | currency}}</li>
-                                <li class="list-group-item"><span class="text-secondary">High Price: </span>{{stock.data?.highPrice | currency}}</li>
-                            </ul>
-                        </div>
-                        <div *ngIf="(stock.data?.percentChange || 0) > 0" class="col-3 align-self-center">
-                            <img src="assets/upTrend.svg" alt="Positive trend" class="img-fluid">
-                        </div>
-                        <div *ngIf="(stock.data?.percentChange || 0) < 0" class="col-3 align-self-center">
-                            <img src="assets/downTrend.svg" alt="Negative trend" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-                <button [routerLink]="['/sentiment', stock.symbol]" [id]="'sentiment' + stock.symbol"
-                class="btn btn-outline-primary col-12 mt-2"><b>Go to social sentiment details  &gt;</b></button>
+          </div>
+          <div class="row mt-2">
+            <div class="col-9">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item placeholder-glow">
+                  <span class="text-secondary placeholder col-10"></span>
+                </li>
+                <li class="list-group-item placeholder-glow">
+                  <span class="text-secondary placeholder col-10"></span>
+                </li>
+                <li class="list-group-item placeholder-glow">
+                  <span class="text-secondary placeholder col-9"></span>
+                </li>
+                <li class="list-group-item placeholder-glow">
+                  <span class="text-secondary placeholder col-8"></span>
+                </li>
+              </ul>
             </div>
+            <div class="col-3 align-self-center placeholder text-secondary">
+              <img src="" alt="" class="text-secondary placeholder col-12">
+              <img src="" alt="" class="text-secondary placeholder col-12">
+            </div>
+          </div>
         </div>
+        <button tabindex="-1" class="btn btn-outline-primary mt-2 placeholder col-12"></button>
+      </div>
+      <!--placeholder template-->
+
+      <div *ngIf="stock.isLoaded" class="card shadow-lg p-4 mb-4 bg-body rounded">
+
+        <div class="card-body my-0 py-0">
+          <div class="row">
+            <div class="col-11">
+              <h5 class="text-start ps-3 text-primary">{{stock.data?.name}}</h5>
+              <h6 class="text-start ps-3"><span class="badge bg-gradient bg-primary">{{stock.symbol}}</span></h6>
+            </div>
+            <a [id]="'remove' + stock.symbol" class="col-1 " (click)="removeStock(stock)">
+              <button type="button" class="btn-close" aria-label="Close"></button>
+            </a>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 col-md-9">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <span class="text-secondary">Change today: </span>
+                  {{ (stock.data?.percentChange || 0) > 0 ? '+' : '' }}{{stock.data?.percentChange | number: '1.2-2'}}%
+                </li>
+                <li class="list-group-item"><span
+                  class="text-secondary">Opening Price: </span>{{stock.data?.openingPrice | currency}}</li>
+                <li class="list-group-item"><span
+                  class="text-secondary">Current Price: </span>{{stock.data?.currentPrice | currency}}</li>
+                <li class="list-group-item"><span
+                  class="text-secondary">High Price: </span>{{stock.data?.highPrice | currency}}</li>
+              </ul>
+            </div>
+            <div *ngIf="(stock.data?.percentChange || 0) > 0" class="col-3 align-self-center">
+              <img src="assets/upTrend.svg" alt="Positive trend" class="img-fluid">
+            </div>
+            <div *ngIf="(stock.data?.percentChange || 0) < 0" class="col-3 align-self-center">
+              <img src="assets/downTrend.svg" alt="Negative trend" class="img-fluid">
+            </div>
+          </div>
+        </div>
+        <button [routerLink]="['/sentiment', stock.symbol]" [id]="'sentiment' + stock.symbol" class="btn btn-outline-primary col-12 mt-2">
+          <b>Go to social sentiment details &gt;</b>
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 

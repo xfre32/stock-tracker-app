@@ -1,47 +1,54 @@
-<ng-container *ngIf="sentiment$ | async as sentiment; else placeholder">
-    <div class="container">
-        <div class="row mt-5 justify-content-center">
-            <div class="col-12 col-md-10">
-              <h1 class="h1 text-center text-secondary">INSIDER SENTIMENT DETAILS</h1>
-                <div class="card shadow-lg px-4 py-3 mt-5 mb-4 bg-body rounded">
-                  <div class="card-header bg-white">
-                    <h1 class="text-center text-primary mt-2">
-                      {{sentiment.name}}
-                      <span class="px-5 position-absolute top-0 start-50 translate-middle badge bg-gradient bg-primary">
-                        {{sentiment.symbol}}
-                      </span>
-                    </h1>
-                  </div>
-                    <div class="card-body">
-                        <div class="row mt-2">
-                            <div *ngFor="let data of sentiment.data" class="col-4">
-                                <div class="row">
-                                    <h4 class="text-secondary ms-3">{{data.month | month}} {{data.year}}</h4>
-                                    <div class="col-8 mb-3">
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item"><span class="text-secondary">Change: </span>{{(data.change || 0) > 0 ? '+' : ''}}{{data.change}}</li>
-                                            <li class="list-group-item"><span class="text-secondary">MSPR: </span>{{data.mspr  | number: "1.2-3"}}</li>
-                                        </ul>
-                                    </div>
-                                    <div *ngIf="(data.change || 0) > 0" class="col-3">
-                                        <img src="assets/upTrend.svg" alt="trend up" class="img-fluid">
-                                    </div>
-                                    <div *ngIf="(data.change || 0) < 0" class="col-3">
-                                        <img src="assets/downTrend.svg" alt="trend down" class="img-fluid">
-                                    </div>
-                                    <div class="col-1"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button id="backBtn" [routerLink]="['/']" class="btn btn-primary bg-gradient"><b>&lt;</b> Back to list of stocks</button>
-            </div>
+<div class="container">
+  <div class="row mt-5 justify-content-center">
+    <div class="col-12 col-md-10">
+      <div class="row mb-2">
+        <div class="col-2 align-self-center">
+          <button id="backBtn" [routerLink]="['/']" class="btn btn-primary bg-gradient px-4"><b>&lt; Back</b></button>
         </div>
+        <div class="col-12 text-center">
+          <h1 class="h1 text-secondary">INSIDER SENTIMENT DETAILS</h1>
+        </div>
+      </div>
+      <ng-container *ngIf="sentiment$ | async as sentiment; else placeholder">
+        <div class="card shadow-lg px-4 py-3 mt-5 mb-4 bg-body rounded">
+          <div class="card-header mx-4 bg-white">
+            <h1 class="text-center text-primary mt-2">
+              {{sentiment.name}}
+              <span class="px-5 position-absolute top-0 start-50 translate-middle badge bg-gradient bg-primary">
+                {{sentiment.symbol}}
+              </span>
+            </h1>
+          </div>
+          <div class="card-body">
+            <div class="row mt-2">
+              <div *ngFor="let data of sentiment.data" class="col-4">
+                <div class="row">
+                  <h4 class="text-secondary ms-3">{{data.month | month}} {{data.year}}</h4>
+                  <div class="col-8 mb-3">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item"><span
+                        class="text-secondary">Change: </span>{{(data.change || 0) > 0 ? '+' : ''}}{{data.change}}</li>
+                      <li class="list-group-item"><span
+                        class="text-secondary">MSPR: </span>{{data.mspr  | number: "1.2-3"}}</li>
+                    </ul>
+                  </div>
+                  <div *ngIf="(data.change || 0) > 0" class="col-3">
+                    <img src="assets/upTrend.svg" alt="trend up" class="img-fluid">
+                  </div>
+                  <div *ngIf="(data.change || 0) < 0" class="col-3">
+                    <img src="assets/downTrend.svg" alt="trend down" class="img-fluid">
+                  </div>
+                  <div class="col-1"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
-</ng-container>
+  </div>
+</div>
 <ng-template #placeholder>
-  <h3 class="text-center mt-5">Just a sec...</h3>
   <div class="row justify-content-center mt-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>

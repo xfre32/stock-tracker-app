@@ -4,11 +4,23 @@ hr {
 
 p {
   font-family: 'Inconsolata', monospace;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.15rem;
   font-weight: bold;
+  font-size: 1.6rem;
   opacity: 0.7;
 }
 
-span {
+p span {
+  opacity: 1;
+  letter-spacing: normal;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+p:nth-of-type(1) span:nth-of-type(1) {
   color: #c3002f;
+}
+
+p span:nth-of-type(2) {
+  color: #6f2bf6;
 }
