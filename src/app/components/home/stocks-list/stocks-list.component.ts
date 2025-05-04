@@ -5,7 +5,8 @@ import { StocksListControllerService } from "./services/stocks-list-controller.s
 
 @Component({
     selector: 'app-stocks-list',
-    templateUrl: './stocks-list.component.html'
+    templateUrl: './stocks-list.component.html',
+    standalone: false
 })
 export class StocksListComponent implements OnInit{
 

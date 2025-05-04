@@ -5,7 +5,8 @@ import * as _ from 'lodash'
 
 @Component({
     selector: 'app-home',
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    standalone: false
 })
 export class HomeComponent implements OnInit {
     public stockInput: string = '';

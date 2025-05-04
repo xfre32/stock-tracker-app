@@ -6,7 +6,8 @@ import { StockSentimentService } from "./services/stock-sentiment.service";
 
 @Component({
     selector: 'app-stock-sentiment',
-    templateUrl: 'stock-sentiment.component.html'
+    templateUrl: 'stock-sentiment.component.html',
+    standalone: false
 })
 export class StockSentimentComponent {
     public sentiment$: Observable<Sentiment>;
