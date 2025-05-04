@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as moment from "moment";
+import moment from "moment";
 import { combineLatest, map, Observable } from "rxjs";
 import { Sentiment } from "src/app/shared/interfaces/sentiment.interface";
 import { ApiService } from "src/app/shared/services/api.service";
