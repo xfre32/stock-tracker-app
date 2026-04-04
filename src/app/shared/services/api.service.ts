@@ -4,28 +4,32 @@ import { Observable } from "rxjs";
 import { StockSearch } from "../interfaces/stock-search.interface";
 import { Quote } from "../interfaces/quote.interface";
 import { InsiderSentiment } from "../interfaces/insider-sentiment.interface";
+import {environment} from "../../../environments/environment";
 
 @Injectable({providedIn: 'root'})
 export class ApiService{
-    private endPoint: string = 'https://finnhub.io/api/v1';
-    private apiKey: string = 'bu4f8kn48v6uehqi3cqg';
-    
+    private base: string = environment.base;
+    private token: string = environment.token;
+
     constructor(private http: HttpClient) {}
 
     searchStock(symbol: string): Observable<StockSearch>{
-        return this.http.get<StockSearch>(
-            `${this.endPoint}/search?q=${symbol}&token=${this.apiKey}`);
+      const queryParams = new URLSearchParams({ q: symbol, token: this.token });
+        return this.http.get<StockSearch>(`${this.base}/search?${queryParams}`);
     }
 
     getQuote(symbol: string): Observable<Quote>{
-        return this.http.get<Quote>(
-            `${this.endPoint}/quote?symbol=${symbol}&token=${this.apiKey}`
-        );
+      const queryParams = new URLSearchParams({ symbol: symbol, token: this.token });
+        return this.http.get<Quote>(`${this.base}/quote?${queryParams}`);
     }
 
     getInsiderSentiment(symbol: string, duration: {from: string; to: string}): Observable<InsiderSentiment> {
-        return this.http.get<InsiderSentiment>(
-            `${this.endPoint}/stock/insider-sentiment?symbol=${symbol}&from=${duration.from}&to=${duration.to}&token=${this.apiKey}`
-        );
+      const queryParams = new URLSearchParams({
+        symbol: symbol,
+        from: duration.from,
+        to: duration.to,
+        token: this.token
+      })
+        return this.http.get<InsiderSentiment>(`${this.base}/stock/insider-sentiment?${queryParams}`);
     }
 }

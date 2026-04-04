@@ -1,7 +1,7 @@
 p {
-  font-family: 'Inconsolata', monospace;
-  letter-spacing: 0.15rem;
-  font-weight: bold;
+  font-family: 'Bricolage Grotesque', 'Inconsolata', monospace;
+  letter-spacing: 0.1rem;
+  font-weight: lighter;
   font-size: 1.6rem;
   opacity: 0.7;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, HostListener, OnInit} from "@angular/core";
 import { LocalStorageService } from "src/app/shared/services/local-storage.service";
 import { StocksListControllerService } from "./stocks-list/services/stocks-list-controller.service";
 import * as _ from 'lodash'
@@ -13,6 +13,13 @@ export class HomeComponent implements OnInit {
     constructor(private localStorage: LocalStorageService, private stockList: StocksListControllerService) {}
 
     ngOnInit(): void {}
+
+  @HostListener('keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Enter') {
+        this.trackStock(this.stockInput)
+      }
+  }
 
     public trackStock(stockInput: string): void{
         if(stockInput.length > 0) {
