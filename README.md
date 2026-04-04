@@ -1,27 +1,56 @@
-# [Stock Tracker app ](https://xfre32.github.io/stock-tracker-app/)
+# [Stock Tracker App](https://xfre32.github.io/stock-tracker-app/)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.
+A real-time stock tracking application built with Angular. Track stock prices, view insider sentiment, and manage your watchlist.
 
-## Development server
+## Prerequisites
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Node.js](https://nodejs.org/) (v22+)
+- [Angular CLI](https://angular.dev/tools/cli) (`npm install -g @angular/cli`)
+- A free [Finnhub](https://finnhub.io/register) API key
 
-## Code scaffolding
+## Setup
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/xfre32/stock-tracker-app.git
+   cd stock-tracker-app
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment files:
+   ```bash
+   cp src/environments/environment.template.ts src/environments/environment.ts
+   cp src/environments/environment.template.ts src/environments/environment.prod.ts
+   ```
+
+4. Edit the environment files and replace `YOUR_FINNHUB_API_KEY_HERE` with your actual Finnhub API key. Set `production: true` in `environment.prod.ts`.
+
+## Development Server
+
+```bash
+ng serve
+```
+
+Navigate to `http://localhost:4200/`. The application will automatically reload on source changes.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+ng build
+```
 
-## Running unit tests
+Build artifacts are stored in the `dist/` directory.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Testing
 
-## Running end-to-end tests
+```bash
+ng test
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Deployment
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+This project is deployed to GitHub Pages via the `gh-pages` branch.

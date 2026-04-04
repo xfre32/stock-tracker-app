@@ -8,8 +8,8 @@ import {environment} from "../../../environments/environment";
 
 @Injectable({providedIn: 'root'})
 export class ApiService{
-    private base: string = environment.base;
-    private token: string = environment.token;
+    private base: string = environment.finnhub.baseUrl;
+    private token: string = environment.finnhub.apiKey;
 
     constructor(private http: HttpClient) {}
 
