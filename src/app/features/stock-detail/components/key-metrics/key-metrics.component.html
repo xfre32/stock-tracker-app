@@ -1,31 +1,41 @@
 <div class="metrics-grid">
-      <mat-card appearance="outlined" class="metric-card metric-card--highlight">
-        <span class="metric-card__label">Current Price</span>
-        <span class="metric-card__value price">{{ quote().c | currency:'USD' }}</span>
-      </mat-card>
+  <mat-card appearance="outlined" class="metric-card metric-card--highlight">
+    <span class="metric-card__label">Current Price</span>
+    <span class="metric-card__value price">{{
+      quote().c | currency: "USD"
+    }}</span>
+  </mat-card>
 
-      <mat-card appearance="outlined" class="metric-card">
-        <span class="metric-card__label">Change Today</span>
-        <app-trend-indicator [value]="quote().dp" />
-      </mat-card>
+  <mat-card appearance="outlined" class="metric-card">
+    <span class="metric-card__label">Change Today</span>
+    <app-trend-indicator [value]="quote().dp" />
+  </mat-card>
 
-      <mat-card appearance="outlined" class="metric-card">
-        <span class="metric-card__label">Open</span>
-        <span class="metric-card__value price">{{ quote().o | currency:'USD' }}</span>
-      </mat-card>
+  <mat-card appearance="outlined" class="metric-card">
+    <span class="metric-card__label">Open</span>
+    <span class="metric-card__value price">{{
+      quote().o | currency: "USD"
+    }}</span>
+  </mat-card>
 
-      <mat-card appearance="outlined" class="metric-card">
-        <span class="metric-card__label">High</span>
-        <span class="metric-card__value price positive">{{ quote().h | currency:'USD' }}</span>
-      </mat-card>
+  <mat-card appearance="outlined" class="metric-card">
+    <span class="metric-card__label">High</span>
+    <span class="metric-card__value price">{{
+      quote().h | currency: "USD"
+    }}</span>
+  </mat-card>
 
-      <mat-card appearance="outlined" class="metric-card">
-        <span class="metric-card__label">Low</span>
-        <span class="metric-card__value price negative">{{ quote().l | currency:'USD' }}</span>
-      </mat-card>
+  <mat-card appearance="outlined" class="metric-card">
+    <span class="metric-card__label">Low</span>
+    <span class="metric-card__value price">{{
+      quote().l | currency: "USD"
+    }}</span>
+  </mat-card>
 
-      <mat-card appearance="outlined" class="metric-card">
-        <span class="metric-card__label">Previous Close</span>
-        <span class="metric-card__value price">{{ quote().pc | currency:'USD' }}</span>
-      </mat-card>
-    </div>
+  <mat-card appearance="outlined" class="metric-card">
+    <span class="metric-card__label">Previous Close</span>
+    <span class="metric-card__value price">{{
+      quote().pc | currency: "USD"
+    }}</span>
+  </mat-card>
+</div>

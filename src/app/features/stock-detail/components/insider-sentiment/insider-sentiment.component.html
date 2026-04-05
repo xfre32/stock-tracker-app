@@ -1,31 +1,41 @@
 @if (sentiment().length > 0) {
-      <table mat-table [dataSource]="sentiment()" class="sentiment-table">
-        <ng-container matColumnDef="month">
-          <th mat-header-cell *matHeaderCellDef>Month</th>
-          <td mat-cell *matCellDef="let row">{{ row.month | monthName }} {{ row.year }}</td>
-        </ng-container>
+  <table mat-table [dataSource]="sentiment()" class="sentiment-table">
+    <ng-container matColumnDef="month">
+      <th mat-header-cell *matHeaderCellDef>Month</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.month | monthName }} {{ row.year }}
+      </td>
+    </ng-container>
 
-        <ng-container matColumnDef="change">
-          <th mat-header-cell *matHeaderCellDef>Change</th>
-          <td mat-cell *matCellDef="let row">
-            <span class="price" [class.positive]="row.change > 0" [class.negative]="row.change < 0">
-              {{ row.change > 0 ? '+' : '' }}{{ row.change | number:'1.0-0' }}
-            </span>
-          </td>
-        </ng-container>
+    <ng-container matColumnDef="change">
+      <th mat-header-cell *matHeaderCellDef>Change</th>
+      <td mat-cell *matCellDef="let row">
+        <span
+          class="price"
+          [class.positive]="row.change > 0"
+          [class.negative]="row.change < 0"
+        >
+          {{ row.change > 0 ? "+" : "" }}{{ row.change | number: "1.0-0" }}
+        </span>
+      </td>
+    </ng-container>
 
-        <ng-container matColumnDef="mspr">
-          <th mat-header-cell *matHeaderCellDef>MSPR</th>
-          <td mat-cell *matCellDef="let row">
-            <span class="price" [class.positive]="row.mspr > 0" [class.negative]="row.mspr < 0">
-              {{ row.mspr > 0 ? '+' : '' }}{{ row.mspr | number:'1.2-2' }}
-            </span>
-          </td>
-        </ng-container>
+    <ng-container matColumnDef="mspr">
+      <th mat-header-cell *matHeaderCellDef>MSPR</th>
+      <td mat-cell *matCellDef="let row">
+        <span
+          class="price"
+          [class.positive]="row.mspr > 0"
+          [class.negative]="row.mspr < 0"
+        >
+          {{ row.mspr > 0 ? "+" : "" }}{{ row.mspr | number: "1.2-2" }}
+        </span>
+      </td>
+    </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    } @else {
-      <p class="no-data">No insider sentiment data available for this period.</p>
-    }
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+} @else {
+  <p class="no-data">No insider sentiment data available for this period.</p>
+}

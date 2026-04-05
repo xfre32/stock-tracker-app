@@ -1,54 +1,65 @@
 <mat-card appearance="outlined" class="profile-card">
-      <mat-card-content>
-        <div class="profile-card__header">
-          @if (profile().logo) {
-            <img [src]="profile().logo" [alt]="profile().name + ' logo'" class="profile-card__logo">
-          } @else {
-            <div class="profile-card__logo-placeholder">
-              <mat-icon>business</mat-icon>
-            </div>
-          }
-          <div class="profile-card__title">
-            <h2>{{ profile().name }}</h2>
-            <mat-chip>{{ profile().ticker }}</mat-chip>
-          </div>
+  <mat-card-content>
+    <div class="profile-card__header">
+      @if (profile().logo) {
+        <img
+          [src]="profile().logo"
+          [alt]="profile().name + ' logo'"
+          class="profile-card__logo"
+        />
+      } @else {
+        <div class="profile-card__logo-placeholder">
+          <mat-icon>business</mat-icon>
         </div>
+      }
+      <div class="profile-card__title">
+        <h2>{{ profile().name }}</h2>
+        <mat-chip>{{ profile().ticker }}</mat-chip>
+      </div>
+    </div>
 
-        <div class="profile-card__details">
-          <div class="detail-row">
-            <mat-icon>category</mat-icon>
-            <span class="detail-row__label">Industry</span>
-            <span class="detail-row__value">{{ profile().finnhubIndustry }}</span>
-          </div>
-          <div class="detail-row">
-            <mat-icon>public</mat-icon>
-            <span class="detail-row__label">Country</span>
-            <span class="detail-row__value">{{ profile().country }}</span>
-          </div>
-          <div class="detail-row">
-            <mat-icon>account_balance</mat-icon>
-            <span class="detail-row__label">Exchange</span>
-            <span class="detail-row__value">{{ profile().exchange }}</span>
-          </div>
-          <div class="detail-row">
-            <mat-icon>pie_chart</mat-icon>
-            <span class="detail-row__label">Market Cap</span>
-            <span class="detail-row__value price">{{ profile().marketCapitalization | currency:'USD':'symbol':'1.0-0' }}M</span>
-          </div>
-          <div class="detail-row">
-            <mat-icon>event</mat-icon>
-            <span class="detail-row__label">IPO Date</span>
-            <span class="detail-row__value">{{ profile().ipo }}</span>
-          </div>
-          @if (profile().weburl) {
-            <div class="detail-row">
-              <mat-icon>language</mat-icon>
-              <span class="detail-row__label">Website</span>
-              <a [href]="profile().weburl" target="_blank" rel="noopener" class="detail-row__value detail-row__link">
-                {{ profile().weburl | slice:0:40 }}
-              </a>
-            </div>
-          }
+    <div class="profile-card__details">
+      <div class="detail-row">
+        <mat-icon>category</mat-icon>
+        <span class="detail-row__label">Industry</span>
+        <span class="detail-row__value">{{ profile().finnhubIndustry }}</span>
+      </div>
+      <div class="detail-row">
+        <mat-icon>public</mat-icon>
+        <span class="detail-row__label">Country</span>
+        <span class="detail-row__value">{{ profile().country }}</span>
+      </div>
+      <div class="detail-row">
+        <mat-icon>account_balance</mat-icon>
+        <span class="detail-row__label">Exchange</span>
+        <span class="detail-row__value">{{ profile().exchange }}</span>
+      </div>
+      <div class="detail-row">
+        <mat-icon>pie_chart</mat-icon>
+        <span class="detail-row__label">Market Cap</span>
+        <span class="detail-row__value price">{{
+          formatMarketCap(profile().marketCapitalization)
+        }}</span>
+      </div>
+      <div class="detail-row">
+        <mat-icon>event</mat-icon>
+        <span class="detail-row__label">IPO Date</span>
+        <span class="detail-row__value">{{ profile().ipo }}</span>
+      </div>
+      @if (profile().weburl) {
+        <div class="detail-row">
+          <mat-icon>language</mat-icon>
+          <span class="detail-row__label">Website</span>
+          <a
+            [href]="profile().weburl"
+            target="_blank"
+            rel="noopener"
+            class="detail-row__value detail-row__link"
+          >
+            {{ profile().weburl | slice: 0 : 40 }}
+          </a>
         </div>
-      </mat-card-content>
-    </mat-card>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

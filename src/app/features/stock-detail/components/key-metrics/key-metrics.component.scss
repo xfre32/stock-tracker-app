@@ -1,37 +1,37 @@
 .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-    }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
 
-    .metric-card {
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+.metric-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-    .metric-card--highlight {
-      grid-column: span 2;
-    }
+.metric-card--highlight {
+  grid-column: span 2;
+}
 
-    .metric-card--highlight .metric-card__value {
-      font-size: 1.75rem;
-    }
+.metric-card--highlight .metric-card__value {
+  font-size: 1.75rem;
+}
 
-    .metric-card__label {
-      font-size: 0.75rem;
-      color: var(--color-neutral);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+.metric-card__label {
+  font-size: 0.75rem;
+  color: var(--color-neutral);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 
-    .metric-card__value {
-      font-size: 1.1rem;
-    }
+.metric-card__value {
+  font-size: 1.1rem;
+}
 
-    @media (max-width: 600px) {
-      .metrics-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
+@media (max-width: 600px) {
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
