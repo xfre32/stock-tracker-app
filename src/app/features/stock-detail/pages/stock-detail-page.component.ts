@@ -1,6 +1,7 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -58,17 +59,17 @@ export class StockDetailPageComponent implements OnInit {
     const threeMonthsAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
     forkJoin({
-      profile: this.api.getCompanyProfile(sym),
-      quote: this.api.getQuote(sym),
-      candles: this.api.getCandles(sym, 'D', oneYearAgo, now),
-      sentiment: this.api.getInsiderSentiment(sym, threeMonthsAgo, today),
-      news: this.api.getCompanyNews(sym, threeMonthsAgo, today),
+      profile: this.api.getCompanyProfile(sym).pipe(catchError(() => of(null))),
+      quote: this.api.getQuote(sym).pipe(catchError(() => of(null))),
+      candles: this.api.getCandles(sym, 'D', oneYearAgo, now).pipe(catchError(() => of([]))),
+      sentiment: this.api.getInsiderSentiment(sym, threeMonthsAgo, today).pipe(catchError(() => of({ data: [], symbol: sym }))),
+      news: this.api.getCompanyNews(sym, threeMonthsAgo, today).pipe(catchError(() => of([]))),
     }).subscribe({
       next: (data) => {
         this.profile.set(data.profile);
         this.quote.set(data.quote);
         this.candles.set(data.candles);
-        this.sentiment.set(data.sentiment.data ?? []);
+        this.sentiment.set(data.sentiment?.data ?? []);
         this.news.set(data.news ?? []);
         this.loading.set(false);
       },
