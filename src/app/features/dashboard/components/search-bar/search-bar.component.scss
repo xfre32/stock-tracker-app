@@ -1,35 +1,35 @@
 .search-bar {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      max-width: 560px;
-      margin: 0 auto;
-    }
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  max-width: 560px;
+  margin: 0 auto;
+}
 
-    .search-bar__field {
-      flex: 1;
-    }
+.search-bar__field {
+  flex: 1;
+}
 
-    .search-bar__input {
-      text-transform: uppercase;
-    }
+.search-bar__input {
+  text-transform: uppercase;
+}
 
-    .search-bar__button {
-      height: 56px;
-      padding: 0 24px;
-    }
+.search-bar__button {
+  height: 56px;
+  padding: 0 24px;
+}
 
-    @media (max-width: 600px) {
-      .search-bar {
-        flex-direction: column;
-        max-width: 100%;
-      }
+@media (max-width: 600px) {
+  .search-bar {
+    flex-direction: column;
+    max-width: 100%;
+  }
 
-      .search-bar__field {
-        width: 100%;
-      }
+  .search-bar__field {
+    width: 100%;
+  }
 
-      .search-bar__button {
-        width: 100%;
-      }
-    }
+  .search-bar__button {
+    width: 100%;
+  }
+}

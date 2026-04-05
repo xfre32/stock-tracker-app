@@ -1,21 +1,31 @@
 <mat-toolbar class="header">
-      <a routerLink="/" class="header__brand">
-        <mat-icon class="header__logo">show_chart</mat-icon>
-        <span class="header__title">StockTracker</span>
-      </a>
+  <a routerLink="/" class="header__brand">
+    <mat-icon class="header__logo">show_chart</mat-icon>
+    <span class="header__title">StockTracker</span>
+  </a>
 
-      <span class="header__spacer"></span>
+  <span class="header__spacer"></span>
 
-      <nav class="header__nav">
-        <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <mat-icon>dashboard</mat-icon>
-          Dashboard
-        </a>
-      </nav>
+  <nav class="header__nav">
+    <a
+      mat-button
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <mat-icon>dashboard</mat-icon>
+      Dashboard
+    </a>
+  </nav>
 
-      <button mat-icon-button (click)="themeService.toggle()" class="header__theme-toggle" aria-label="Toggle theme">
-        <mat-icon class="theme-icon">
-          {{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}
-        </mat-icon>
-      </button>
-    </mat-toolbar>
+  <button
+    mat-icon-button
+    (click)="themeService.toggle()"
+    class="header__theme-toggle"
+    aria-label="Toggle theme"
+  >
+    <mat-icon class="theme-icon">
+      {{ themeService.isDark() ? "light_mode" : "dark_mode" }}
+    </mat-icon>
+  </button>
+</mat-toolbar>

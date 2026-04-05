@@ -1,18 +1,20 @@
 <section class="dashboard">
-      <div class="dashboard__hero">
-        <h1 class="dashboard__title">Stock Tracker</h1>
-        <p class="dashboard__subtitle">Track your favorite stocks in real time</p>
-      </div>
+  <div class="dashboard__hero">
+    <h1 class="dashboard__title">Stock Tracker</h1>
+    <p class="dashboard__subtitle">Track your favorite stocks in real time</p>
+  </div>
 
-      <app-search-bar (search)="store.addStock($event)" />
+  <app-search-bar (search)="store.addStock($event)" />
 
-      <div class="dashboard__summary" >
-        @if (store.count() > 0) {
-          <p class="dashboard__count">
-            Your watchlist has <strong>{{ store.count() }}</strong> item{{ store.count() !== 1 ? 's' : '' }}
-          </p>
-        }
-      </div>
+  <div class="dashboard__summary">
+    @if (store.count() > 0) {
+      <p class="dashboard__count">
+        Your watchlist has <strong>{{ store.count() }}</strong> item{{
+          store.count() !== 1 ? "s" : ""
+        }}
+      </p>
+    }
+  </div>
 
-      <app-watchlist />
-    </section>
+  <app-watchlist />
+</section>

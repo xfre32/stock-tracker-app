@@ -10,7 +10,7 @@ import { WatchlistItem } from '../../models/stock.model';
 @Component({
   selector: 'app-stock-card',
   standalone: true,
-  imports: [DecimalPipe, CurrencyPipe, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, TrendIndicatorComponent],
+  imports: [CurrencyPipe, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, TrendIndicatorComponent],
   templateUrl: './stock-card.component.html',
   styleUrl: './stock-card.component.scss',
 })
