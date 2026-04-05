@@ -1,0 +1,37 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard__hero {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.dashboard__title {
+  font-family: 'Geologica', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--mat-sys-primary);
+}
+
+.dashboard__subtitle {
+  font-size: 1rem;
+  color: var(--color-neutral);
+  margin-top: 4px;
+}
+
+.dashboard__summary {
+  text-align: center;
+}
+
+.dashboard__count {
+  font-size: 0.9rem;
+  color: var(--color-neutral);
+}
+
+.dashboard__count strong {
+  color: var(--mat-sys-primary);
+}

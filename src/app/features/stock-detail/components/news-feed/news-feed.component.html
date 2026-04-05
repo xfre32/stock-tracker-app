@@ -1,0 +1,29 @@
+@if (news().length > 0) {
+      <mat-list class="news-list">
+        @for (article of news() | slice:0:15; track article.id) {
+          <a mat-list-item [href]="article.url" target="_blank" rel="noopener" class="news-item">
+            <div class="news-item__content">
+              @if (article.image) {
+                <img [src]="article.image" [alt]="article.headline" class="news-item__image"
+                     (error)="onImageError($event)">
+              } @else {
+                <div class="news-item__image-placeholder">
+                  <mat-icon>article</mat-icon>
+                </div>
+              }
+              <div class="news-item__text">
+                <h4 class="news-item__headline">{{ article.headline }}</h4>
+                <div class="news-item__meta">
+                  <span class="news-item__source">{{ article.source }}</span>
+                  <span class="news-item__date">{{ article.datetime * 1000 | date:'MMM d, y · h:mm a' }}</span>
+                </div>
+                <p class="news-item__summary">{{ article.summary | slice:0:150 }}...</p>
+              </div>
+            </div>
+          </a>
+          <mat-divider />
+        }
+      </mat-list>
+    } @else {
+      <p class="no-data">No recent news available.</p>
+    }

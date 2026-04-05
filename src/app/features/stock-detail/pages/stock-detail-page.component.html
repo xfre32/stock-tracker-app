@@ -1,0 +1,40 @@
+<section class="stock-detail">
+      <button mat-button (click)="goBack()" class="stock-detail__back">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Dashboard
+      </button>
+
+      @if (loading()) {
+        <div class="stock-detail__loading">
+          <mat-spinner diameter="48" />
+          <p>Loading {{ symbol() }} data...</p>
+        </div>
+      } @else if (profile() && quote()) {
+        <mat-tab-group animationDuration="200ms" class="stock-detail__tabs">
+          <mat-tab label="Overview">
+            <div class="tab-content">
+              <app-company-profile [profile]="profile()!" />
+              <app-key-metrics [quote]="quote()!" />
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Chart">
+            <div class="tab-content">
+              <app-price-chart [candles]="candles()" [symbol]="symbol()" />
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Sentiment">
+            <div class="tab-content">
+              <app-insider-sentiment [sentiment]="sentiment()" />
+            </div>
+          </mat-tab>
+
+          <mat-tab label="News">
+            <div class="tab-content">
+              <app-news-feed [news]="news()" />
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      }
+    </section>

@@ -1,0 +1,9 @@
+<mat-card appearance="outlined" class="chart-card">
+      <div class="chart-card__controls">
+        <mat-button-toggle-group [(value)]="chartType" (change)="rebuildSeries()">
+          <mat-button-toggle value="area">Line</mat-button-toggle>
+          <mat-button-toggle value="candlestick">Candlestick</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div #chartContainer class="chart-card__container"></div>
+    </mat-card>

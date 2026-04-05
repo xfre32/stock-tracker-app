@@ -1,0 +1,20 @@
+@if (store.isEmpty() && store.loading().size === 0) {
+      <app-empty-state
+        icon="visibility"
+        title="Your watchlist is empty"
+        message="Search for a stock symbol above and start tracking your favorite stocks."
+      />
+    } @else {
+      <div class="watchlist-grid">
+        @for (item of store.items(); track item.symbol) {
+          <app-stock-card
+            [item]="item"
+            (remove)="store.removeStock($event)"
+            (viewDetails)="onViewDetails($event)"
+          />
+        }
+        @for (symbol of loadingSymbols(); track symbol) {
+          <app-skeleton-card />
+        }
+      </div>
+    }
