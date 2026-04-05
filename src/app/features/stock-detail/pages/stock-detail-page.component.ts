@@ -56,14 +56,14 @@ export class StockDetailPageComponent implements OnInit {
     const now = Math.floor(Date.now() / 1000);
     const oneYearAgo = now - 365 * 24 * 60 * 60;
     const today = new Date().toISOString().split('T')[0];
-    const threeMonthsAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const sixMonthsAgo = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
     forkJoin({
       profile: this.api.getCompanyProfile(sym).pipe(catchError(() => of(null))),
       quote: this.api.getQuote(sym).pipe(catchError(() => of(null))),
       candles: this.api.getCandles(sym, 'D', oneYearAgo, now).pipe(catchError(() => of([]))),
-      sentiment: this.api.getInsiderSentiment(sym, threeMonthsAgo, today).pipe(catchError(() => of({ data: [], symbol: sym }))),
-      news: this.api.getCompanyNews(sym, threeMonthsAgo, today).pipe(catchError(() => of([]))),
+      sentiment: this.api.getInsiderSentiment(sym, sixMonthsAgo, today).pipe(catchError(() => of({ data: [], symbol: sym }))),
+      news: this.api.getCompanyNews(sym, sixMonthsAgo, today).pipe(catchError(() => of([]))),
     }).subscribe({
       next: (data) => {
         this.profile.set(data.profile);

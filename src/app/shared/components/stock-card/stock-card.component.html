@@ -4,15 +4,10 @@
       <div class="stock-card__identity">
         <mat-card-title class="stock-card__name">{{
           item().name
-        }}</mat-card-title>
+          }}</mat-card-title>
         <mat-chip class="stock-card__symbol">{{ item().symbol }}</mat-chip>
       </div>
-      <button
-        mat-icon-button
-        (click)="remove.emit(item().symbol)"
-        class="stock-card__remove"
-        aria-label="Remove stock"
-      >
+      <button mat-icon-button (click)="remove.emit(item().symbol)" class="stock-card__remove" aria-label="Remove stock">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -22,7 +17,7 @@
     <div class="stock-card__price-section">
       <span class="stock-card__price price">{{
         item().currentPrice | currency: "USD"
-      }}</span>
+        }}</span>
       <app-trend-indicator [value]="item().percentChange" />
     </div>
 
@@ -31,35 +26,31 @@
         <span class="metric__label">Open</span>
         <span class="metric__value price">{{
           item().openPrice | currency: "USD"
-        }}</span>
+          }}</span>
       </div>
       <div class="metric">
         <span class="metric__label">High</span>
         <span class="metric__value price">{{
           item().highPrice | currency: "USD"
-        }}</span>
+          }}</span>
       </div>
       <div class="metric">
         <span class="metric__label">Low</span>
         <span class="metric__value price">{{
           item().lowPrice | currency: "USD"
-        }}</span>
+          }}</span>
       </div>
       <div class="metric">
         <span class="metric__label">Prev Close</span>
         <span class="metric__value price">{{
           item().previousClose | currency: "USD"
-        }}</span>
+          }}</span>
       </div>
     </div>
   </mat-card-content>
 
-  <mat-card-actions align="end">
-    <button
-      mat-button
-      color="primary"
-      (click)="viewDetails.emit(item().symbol)"
-    >
+  <mat-card-actions align="start">
+    <button mat-button color="primary" (click)="viewDetails.emit(item().symbol)">
       <mat-icon>open_in_new</mat-icon>
       View Details
     </button>

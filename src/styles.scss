@@ -5,7 +5,7 @@ html {
   @include mat.theme((color: (primary: mat.$azure-palette,
         tertiary: mat.$violet-palette,
       ),
-      typography: Roboto,
+      typography: Geologica,
       density: 0,
     ));
   color-scheme: light;
@@ -16,7 +16,7 @@ html.dark-theme {
         primary: mat.$azure-palette,
         tertiary: mat.$violet-palette,
       ),
-      typography: Roboto,
+      typography: Geologica,
       density: 0,
     ));
   color-scheme: dark;
