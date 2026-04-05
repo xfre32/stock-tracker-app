@@ -1,0 +1,16 @@
+@if (value() > 0) {
+      <span class="trend positive">
+        <mat-icon>trending_up</mat-icon>
+        +{{ value() | number:'1.2-2' }}%
+      </span>
+    } @else if (value() < 0) {
+      <span class="trend negative">
+        <mat-icon>trending_down</mat-icon>
+        {{ value() | number:'1.2-2' }}%
+      </span>
+    } @else {
+      <span class="trend neutral">
+        <mat-icon>trending_flat</mat-icon>
+        {{ value() | number:'1.2-2' }}%
+      </span>
+    }

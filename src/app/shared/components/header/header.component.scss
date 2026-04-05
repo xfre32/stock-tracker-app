@@ -1,0 +1,55 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.header__logo {
+  color: var(--mat-sys-primary);
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.header__title {
+  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.header__spacer {
+  flex: 1;
+}
+
+.header__nav a.active {
+  color: var(--mat-sys-primary);
+}
+
+.header__theme-toggle .theme-icon {
+  transition: transform 0.3s ease;
+}
+
+.header__theme-toggle:hover .theme-icon {
+  transform: rotate(30deg);
+}
+
+@media (max-width: 600px) {
+  .header__title {
+    font-size: 1rem;
+  }
+
+  .header__nav a span {
+    display: none;
+  }
+}
