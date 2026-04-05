@@ -1,0 +1,132 @@
+@use '@angular/material' as mat;
+
+// ===== Custom Theme Definition =====
+html {
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+  color-scheme: light;
+}
+
+html.dark-theme {
+  @include mat.theme((color: (theme-type: dark,
+        primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+  color-scheme: dark;
+}
+
+// ===== CSS Custom Properties =====
+:root {
+  // Spacing
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  // Border radius
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  // Shadows (light mode)
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  // Trend colors
+  --color-positive: #16a34a;
+  --color-negative: #dc2626;
+  --color-neutral: #6b7280;
+
+  // Monospace font for numbers
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html.dark-theme {
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+// ===== Global Reset & Base Styles =====
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Geologica', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// ===== Utility Classes =====
+.price {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.positive {
+  color: var(--color-positive) !important;
+}
+
+.negative {
+  color: var(--color-negative) !important;
+}
+
+.neutral {
+  color: var(--color-neutral) !important;
+}
+
+// ===== Snackbar Theme Overrides =====
+.snackbar-success .mdc-snackbar__surface {
+  background-color: var(--color-positive) !important;
+}
+
+.snackbar-error .mdc-snackbar__surface {
+  background-color: var(--color-negative) !important;
+}
+
+.snackbar-warning .mdc-snackbar__surface {
+  background-color: #f59e0b !important;
+}
+
+// ===== Scrollbar Styling =====
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-full);
+}
+
+html.dark-theme ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
