@@ -4,13 +4,14 @@ import {
 import { createChart, IChartApi, ISeriesApi, ColorType } from 'lightweight-charts';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { CandleData } from '../../../../shared/models/candle.model';
 
 @Component({
   selector: 'app-price-chart',
   standalone: true,
-  imports: [MatButtonToggleModule, MatCardModule],
+  imports: [MatButtonToggleModule, MatCardModule, MatIconModule],
   templateUrl: './price-chart.component.html',
   styleUrl: './price-chart.component.scss',
 })
@@ -40,7 +41,7 @@ export class PriceChartComponent implements OnDestroy {
     effect(() => {
       const data = this.candles();
       if (data.length > 0 && this.chart) {
-        this.rebuildSeries();
+        this.rebuildSeries(data);
       }
     });
   }
@@ -78,7 +79,7 @@ export class PriceChartComponent implements OnDestroy {
     this.resizeObserver.observe(container);
   }
 
-  rebuildSeries(): void {
+  rebuildSeries(providedData?: CandleData[]): void {
     if (!this.chart) return;
 
     if (this.series) {
@@ -86,7 +87,7 @@ export class PriceChartComponent implements OnDestroy {
       this.series = null;
     }
 
-    const data = this.candles();
+    const data = providedData ?? this.candles();
     if (data.length === 0) return;
 
     if (this.chartType === 'candlestick') {

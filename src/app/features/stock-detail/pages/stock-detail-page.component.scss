@@ -1,25 +1,46 @@
 .stock-detail {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-    .stock-detail__back {
-      align-self: flex-start;
-    }
+.stock-detail__back {
+  align-self: flex-start;
+}
 
-    .stock-detail__loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      padding: 64px 0;
-      color: var(--color-neutral);
-    }
+.stock-detail__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 64px 0;
+  color: var(--color-neutral);
+}
 
-    .tab-content {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 20px 0;
-    }
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.stock-detail__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--color-neutral);
+
+  mat-icon {
+    font-size: 56px;
+    width: 56px;
+    height: 56px;
+    color: var(--color-negative);
+  }
+
+  h3 {
+    color: var(--mat-sys-on-surface);
+  }
+}
