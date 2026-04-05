@@ -1,17 +1,23 @@
 .watchlist-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 20px;
-      animation: fadeIn 0.3s ease;
-    }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+  animation: fadeIn 0.3s ease;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    @media (max-width: 600px) {
-      .watchlist-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+@media (max-width: 600px) {
+  .watchlist-grid {
+    grid-template-columns: 1fr;
+  }
+}

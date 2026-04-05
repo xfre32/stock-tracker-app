@@ -98,6 +98,7 @@ export class WatchlistStore {
           return newSet;
         });
         this.items.update(items => items.filter(i => i.symbol !== symbol));
+        this.notification.error(`Failed to load data for ${symbol}`);
       },
     });
   }
