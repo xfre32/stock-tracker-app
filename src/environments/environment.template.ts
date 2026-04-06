@@ -7,5 +7,9 @@ export const environment = {
   finnhub: {
     baseUrl: 'https://finnhub.io/api/v1',
     apiKey: 'YOUR_FINNHUB_API_KEY_HERE' // Get your free key at https://finnhub.io/register
+  },
+  twelveData: {
+    baseUrl: 'https://api.twelvedata.com',
+    apiKey: 'YOUR_TWELVE_DATA_API_KEY_HERE' // Get your free key at https://twelvedata.com/
   }
 };

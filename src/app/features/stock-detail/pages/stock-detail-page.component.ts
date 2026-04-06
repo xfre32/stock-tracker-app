@@ -17,7 +17,6 @@ import { NewsFeedComponent } from '../components/news-feed/news-feed.component';
 import { CompanyProfile, CompanyNews } from '../../../shared/models/company.model';
 import { StockQuote } from '../../../shared/models/stock.model';
 import { InsiderSentimentData } from '../../../shared/models/sentiment.model';
-import { CandleData } from '../../../shared/models/candle.model';
 
 @Component({
   selector: 'app-stock-detail-page',
@@ -39,7 +38,6 @@ export class StockDetailPageComponent implements OnInit {
   readonly loading = signal(true);
   readonly profile = signal<CompanyProfile | null>(null);
   readonly quote = signal<StockQuote | null>(null);
-  readonly candles = signal<CandleData[]>([]);
   readonly sentiment = signal<InsiderSentimentData[]>([]);
   readonly news = signal<CompanyNews[]>([]);
 
@@ -53,22 +51,18 @@ export class StockDetailPageComponent implements OnInit {
 
   private loadData(): void {
     const sym = this.symbol();
-    const now = Math.floor(Date.now() / 1000);
-    const oneYearAgo = now - 365 * 24 * 60 * 60;
     const today = new Date().toISOString().split('T')[0];
     const sixMonthsAgo = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
     forkJoin({
       profile: this.api.getCompanyProfile(sym).pipe(catchError(() => of(null))),
       quote: this.api.getQuote(sym).pipe(catchError(() => of(null))),
-      candles: this.api.getCandles(sym, 'D', oneYearAgo, now).pipe(catchError(() => of([]))),
       sentiment: this.api.getInsiderSentiment(sym, sixMonthsAgo, today).pipe(catchError(() => of({ data: [], symbol: sym }))),
       news: this.api.getCompanyNews(sym, sixMonthsAgo, today).pipe(catchError(() => of([]))),
     }).subscribe({
       next: (data) => {
         this.profile.set(data.profile);
         this.quote.set(data.quote);
-        this.candles.set(data.candles);
         this.sentiment.set(data.sentiment?.data ?? []);
         this.news.set(data.news ?? []);
         this.loading.set(false);

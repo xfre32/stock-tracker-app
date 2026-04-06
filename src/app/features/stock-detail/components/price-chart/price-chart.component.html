@@ -1,19 +1,34 @@
 <mat-card appearance="outlined" class="chart-card">
-  @if (candles().length > 0) {
+  <div class="chart-card__header">
     <div class="chart-card__controls">
-      <mat-button-toggle-group [(value)]="chartType" (change)="rebuildSeries()">
-        <mat-button-toggle value="area">Line</mat-button-toggle>
-        <mat-button-toggle value="candlestick">Candlestick</mat-button-toggle>
+      <mat-button-toggle-group
+        [value]="selectedTimeframe()"
+        (change)="onTimeframeToggle($event)"
+        class="timeframe-group"
+      >
+        @for (tf of timeframes; track tf.label) {
+          <mat-button-toggle [value]="tf">{{ tf.label }}</mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+
+      <mat-button-toggle-group [(value)]="chartType" (change)="loadChartData()">
+        <mat-button-toggle value="area">
+          <mat-icon>show_chart</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="candlestick">
+          <mat-icon>candlestick_chart</mat-icon>
+        </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
+  </div>
+
+  <div class="chart-card__container-wrapper">
     <div #chartContainer class="chart-card__container"></div>
-  } @else {
-    <div class="chart-card__empty">
-      <mat-icon>candlestick_chart</mat-icon>
-      <p>
-        Chart data is unavailable — Finnhub's free tier does not support US
-        equity candle data.
-      </p>
-    </div>
-  }
+
+    @if (chartLoading()) {
+      <div class="chart-card__loader">
+        <mat-spinner diameter="40" />
+      </div>
+    }
+  </div>
 </mat-card>

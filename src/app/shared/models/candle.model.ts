@@ -11,7 +11,7 @@ export interface CandleResponse {
 
 /** Transformed for TradingView Lightweight Charts */
 export interface CandleData {
-  time: string;   // YYYY-MM-DD
+  time: string | number;   // YYYY-MM-DD
   open: number;
   high: number;
   low: number;

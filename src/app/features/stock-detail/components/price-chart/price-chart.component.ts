@@ -1,30 +1,47 @@
 import {
-  Component, ElementRef, OnDestroy, afterNextRender, inject, input, effect,
+  Component, ElementRef, OnDestroy, afterNextRender, inject, input, effect, signal,
 } from '@angular/core';
 import { createChart, IChartApi, ISeriesApi, ColorType } from 'lightweight-charts';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ThemeService } from '../../../../core/services/theme.service';
+import { TwelveDataApiService } from '../../../../core/services/twelve-data-api.service';
 import { CandleData } from '../../../../shared/models/candle.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-price-chart',
   standalone: true,
-  imports: [MatButtonToggleModule, MatCardModule, MatIconModule],
+  imports: [MatButtonToggleModule, MatCardModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './price-chart.component.html',
   styleUrl: './price-chart.component.scss',
 })
 export class PriceChartComponent implements OnDestroy {
-  readonly candles = input.required<CandleData[]>();
   readonly symbol = input.required<string>();
 
   private readonly elRef = inject(ElementRef);
   private readonly themeService = inject(ThemeService);
+  private readonly twelveDataApi = inject(TwelveDataApiService);
+
   private chart: IChartApi | null = null;
   private series: ISeriesApi<any> | null = null;
   private resizeObserver: ResizeObserver | null = null;
+  private dataSubscription: Subscription | null = null;
+
   chartType: 'area' | 'candlestick' = 'area';
+  readonly chartLoading = signal(false);
+
+  readonly timeframes = [
+    { label: '1D', interval: '5min', outputsize: 78, isIntraday: true },
+    { label: '1W', interval: '15min', outputsize: 140, isIntraday: true },
+    { label: '1M', interval: '1day', outputsize: 22, isIntraday: false },
+    { label: '3M', interval: '1day', outputsize: 66, isIntraday: false },
+    { label: '6M', interval: '1day', outputsize: 130, isIntraday: false },
+    { label: '1Y', interval: '1day', outputsize: 252, isIntraday: false },
+  ];
+  selectedTimeframe = signal(this.timeframes[3]); // Default 3M
 
   constructor() {
     afterNextRender(() => {
@@ -37,12 +54,45 @@ export class PriceChartComponent implements OnDestroy {
         this.applyTheme();
       }
     });
+  }
 
-    effect(() => {
-      const data = this.candles();
-      if (data.length > 0 && this.chart) {
-        this.rebuildSeries(data);
-      }
+  onTimeframeToggle(event: MatButtonToggleChange): void {
+    this.selectedTimeframe.set(event.value);
+    this.loadChartData();
+  }
+
+  loadChartData(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
+
+    this.chartLoading.set(true);
+    const tf = this.selectedTimeframe();
+
+    this.dataSubscription = this.twelveDataApi
+      .getTimeSeries(this.symbol(), tf.interval, tf.outputsize)
+      .subscribe({
+        next: (data) => {
+          this.chartLoading.set(false);
+          if (data.length > 0 && this.chart) {
+            this.updateChartOptions(tf.isIntraday);
+            this.rebuildSeries(data);
+          }
+        },
+        error: () => {
+          this.chartLoading.set(false);
+          // Potential to show error state in UI
+        },
+      });
+  }
+
+  private updateChartOptions(isIntraday: boolean): void {
+    if (!this.chart) return;
+    this.chart.applyOptions({
+      timeScale: {
+        timeVisible: isIntraday,
+        secondsVisible: false,
+      },
     });
   }
 
@@ -65,15 +115,23 @@ export class PriceChartComponent implements OnDestroy {
       rightPriceScale: { borderColor: this.themeService.isDark() ? '#374151' : '#e5e7eb' },
       timeScale: {
         borderColor: this.themeService.isDark() ? '#374151' : '#e5e7eb',
-        timeVisible: false,
+        timeVisible: this.selectedTimeframe().isIntraday,
       },
     });
 
-    this.rebuildSeries();
+    this.loadChartData();
 
+    let lastWidth = container.clientWidth;
     this.resizeObserver = new ResizeObserver(entries => {
       if (this.chart && entries[0]) {
-        this.chart.applyOptions({ width: entries[0].contentRect.width });
+        const newWidth = entries[0].contentRect.width;
+        this.chart.applyOptions({ width: newWidth });
+
+        // If the width expands from 0 (e.g. tab switch), ensures the data fills the space.
+        if (lastWidth === 0 && newWidth > 0) {
+          this.chart.timeScale().fitContent();
+        }
+        lastWidth = newWidth;
       }
     });
     this.resizeObserver.observe(container);
@@ -87,8 +145,8 @@ export class PriceChartComponent implements OnDestroy {
       this.series = null;
     }
 
-    const data = providedData ?? this.candles();
-    if (data.length === 0) return;
+    const data = providedData;
+    if (!data || data.length === 0) return;
 
     if (this.chartType === 'candlestick') {
       this.series = this.chart.addCandlestickSeries({
@@ -107,7 +165,7 @@ export class PriceChartComponent implements OnDestroy {
         bottomColor: 'rgba(59, 130, 246, 0.0)',
         lineWidth: 2,
       });
-      this.series?.setData(data.map(d => ({ time: d.time, value: d.close })) as any);
+      this.series?.setData(data.map((d: CandleData) => ({ time: d.time, value: d.close })) as any);
     }
 
     this.chart.timeScale().fitContent();
@@ -132,6 +190,7 @@ export class PriceChartComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
+    this.dataSubscription?.unsubscribe();
     this.chart?.remove();
     this.chart = null;
     this.series = null;
