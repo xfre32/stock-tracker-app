@@ -9,6 +9,8 @@ import { FinnhubApiService } from '../../../../core/services/finnhub-api.service
 import { StockSearchResult } from '../../../../shared/models/stock.model';
 import { catchError, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { KeyboardShortcutService } from '../../../../core/services/keyboard-shortcut.service';
+import { ElementRef, ViewChild, effect } from '@angular/core';
 
 @Component({
   selector: 'app-search-bar',
@@ -22,9 +24,17 @@ export class SearchBarComponent {
   readonly suggestions = signal<StockSearchResult[]>([]);
   readonly search = output<string>();
 
+  @ViewChild('searchInputRef') inputElement!: ElementRef<HTMLInputElement>;
+
   private readonly api = inject(FinnhubApiService);
+  private readonly shortcuts = inject(KeyboardShortcutService);
 
   constructor() {
+    effect(() => {
+      if (this.shortcuts.searchTriggered()) {
+        this.inputElement.nativeElement.focus();
+      }
+    });
     this.searchInput.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
