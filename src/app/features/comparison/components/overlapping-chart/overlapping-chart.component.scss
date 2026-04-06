@@ -1,0 +1,40 @@
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: var(--mat-sys-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline) 30%, transparent);
+  overflow: hidden;
+}
+
+.chart-container {
+  width: 100%;
+  height: 100%;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: color-mix(in srgb, var(--mat-sys-surface) 60%, transparent);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.error-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ef4444;
+  background-color: var(--mat-sys-surface);
+  padding: 16px 24px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}

@@ -1,0 +1,75 @@
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  position: relative;
+  background-color: var(--mat-sys-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline) 30%, transparent);
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: color-mix(in srgb, var(--mat-sys-surface) 60%, transparent);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.company-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th.mat-header-cell {
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 5%, transparent);
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.95rem;
+}
+
+.symbol-header {
+  font-family: var(--font-mono);
+  text-align: left;
+  padding-right: 24px;
+}
+
+td.mat-cell {
+  font-size: 0.9rem;
+}
+
+.metric-name-cell {
+  font-weight: 500;
+  color: var(--color-neutral);
+  white-space: nowrap;
+}
+
+td.mat-cell:not(.metric-name-cell) {
+  text-align: left;
+  font-family: var(--font-mono);
+  padding-right: 24px;
+}
+
+.positive {
+  color: #22c55e;
+}
+
+.negative {
+  color: #ef4444;
+}
+
+.muted {
+  color: var(--color-neutral);
+  opacity: 0.5;
+}
+
+.error-state {
+  padding: 16px;
+  text-align: center;
+  color: #ef4444;
+}

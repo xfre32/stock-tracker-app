@@ -38,7 +38,7 @@
         <mat-icon>pie_chart</mat-icon>
         <span class="detail-row__label">Market Cap</span>
         <span class="detail-row__value price">{{
-          formatMarketCap(profile().marketCapitalization)
+          profile().marketCapitalization | marketCap
         }}</span>
       </div>
       <div class="detail-row">

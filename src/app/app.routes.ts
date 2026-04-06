@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadChildren: () => import('./features/stock-detail/stock-detail.routes').then(m => m.STOCK_DETAIL_ROUTES),
   },
   {
+    path: 'compare',
+    loadChildren: () => import('./features/comparison/comparison.routes').then(m => m.COMPARISON_ROUTES),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

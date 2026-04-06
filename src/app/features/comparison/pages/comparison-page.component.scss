@@ -1,0 +1,52 @@
+.comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.comparison__header {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.comparison__title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--mat-sys-primary);
+}
+
+.comparison__subtitle {
+  font-size: 1rem;
+  color: var(--color-neutral);
+  margin-top: 6px;
+}
+
+.comparison__badges {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.comparison__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+  color: var(--color-neutral);
+  text-align: center;
+
+  &-icon {
+    font-size: 64px;
+    height: 64px;
+    width: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+}
+
+.comparison__charts {
+  margin-bottom: 32px;
+}

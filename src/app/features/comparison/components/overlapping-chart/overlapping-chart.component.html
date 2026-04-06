@@ -1,0 +1,15 @@
+<div class="chart-wrapper">
+  @if (loading()) {
+    <div class="loading-overlay">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  <div class="chart-container" #chartContainerRef></div>
+
+  @if (error()) {
+    <div class="error-state">
+      {{ error() }}
+    </div>
+  }
+</div>
