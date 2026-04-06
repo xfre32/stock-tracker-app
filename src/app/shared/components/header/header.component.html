@@ -1,4 +1,13 @@
 <mat-toolbar class="header">
+  <button
+    mat-icon-button
+    (click)="toggleSidenav.emit()"
+    class="header__hamburger"
+    aria-label="Open navigation menu"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
   <a routerLink="/" class="header__brand">
     <mat-icon class="header__logo">show_chart</mat-icon>
     <span class="header__title">StockTracker</span>
@@ -15,6 +24,14 @@
     >
       <mat-icon>dashboard</mat-icon>
       Dashboard
+    </a>
+    <a
+      mat-button
+      routerLink="/compare"
+      routerLinkActive="active"
+    >
+      <mat-icon>compare_arrows</mat-icon>
+      Compare
     </a>
   </nav>
 

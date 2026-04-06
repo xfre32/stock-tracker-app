@@ -16,9 +16,9 @@
 
 .header__logo {
   color: var(--mat-sys-primary);
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .header__title {
@@ -32,12 +32,14 @@
   flex: 1;
 }
 
-.header__nav a.active {
-  color: var(--mat-sys-primary);
-}
-
 .header__theme-toggle .theme-icon {
   transition: transform 0.3s ease;
+}
+
+.header__hamburger {
+  display: none;
+  margin-right: -8px;
+  margin-left: -8px;
 }
 
 .header__theme-toggle:hover .theme-icon {
@@ -45,11 +47,30 @@
 }
 
 @media (max-width: 600px) {
-  .header__title {
-    font-size: 1rem;
+  .header {
+    justify-content: space-between;
   }
 
-  .header__nav a span {
+  .header__brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: auto;
+  }
+
+  .header__spacer {
     display: none;
+  }
+
+  .header__title {
+    font-size: 1.1rem;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__hamburger {
+    display: block;
   }
 }

@@ -33,3 +33,42 @@
     width: 100%;
   }
 }
+
+.search-bar__shortcut-hint {
+  font-size: 0.75rem;
+  color: var(--color-neutral);
+  background: color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface));
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-primary) 20%, transparent);
+  margin-right: 8px;
+  user-select: none;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .search-bar__shortcut-hint {
+    display: none;
+  }
+}
+
+.autocomplete-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.3;
+}
+
+.autocomplete-symbol {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.autocomplete-name {
+  color: var(--color-neutral);
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

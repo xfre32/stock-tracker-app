@@ -1,0 +1,38 @@
+<section class="comparison">
+  <div class="comparison__header">
+    <h1 class="comparison__title">Compare Stocks</h1>
+    <p class="comparison__subtitle">Visualize and compare up to 3 stocks side-by-side</p>
+  </div>
+
+  <app-search-bar (search)="addStock($event)" />
+
+  <div class="comparison__content">
+    @if (symbols().length > 0) {
+    <div class="comparison__badges">
+      <mat-chip-set aria-label="Selected Stocks">
+        @for (symbol of symbols(); track symbol) {
+        <mat-chip-row (removed)="removeStock(symbol)" [removable]="true">
+          {{ symbol }}
+          <button matChipRemove [attr.aria-label]="'Remove ' + symbol">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+        }
+      </mat-chip-set>
+    </div>
+
+    <div class="comparison__charts">
+      <app-overlapping-chart [symbols]="symbols()" />
+    </div>
+
+    <div class="comparison__metrics">
+      <app-comparison-table [symbols]="symbols()" />
+    </div>
+    } @else {
+    <div class="comparison__empty">
+      <mat-icon class="comparison__empty-icon">compare</mat-icon>
+      <p>Add stocks using the search bar above to start comparing.</p>
+    </div>
+    }
+  </div>
+</section>

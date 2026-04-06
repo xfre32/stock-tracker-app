@@ -8,11 +8,22 @@
 
   <div class="dashboard__summary">
     @if (store.count() > 0) {
-      <p class="dashboard__count">
-        Your watchlist has <strong>{{ store.count() }}</strong> item{{
-          store.count() !== 1 ? "s" : ""
-        }}
-      </p>
+      <div class="summary-container">
+        <p class="dashboard__count">
+          Your watchlist has <strong>{{ store.count() }}</strong> item{{
+            store.count() !== 1 ? "s" : ""
+          }}
+        </p>
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="exportToCsv()"
+          matTooltip="Export to CSV"
+          aria-label="Export watchlist to CSV"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+      </div>
     }
   </div>
 

@@ -13,11 +13,12 @@
     </div>
   </mat-card-header>
 
-  <mat-card-content class="stock-card__content">
+  <mat-card-content class="stock-card__content" [class.stock-card__updated]="flashActive()">
     <div class="stock-card__price-section">
       <span class="stock-card__price price">{{
         item().currentPrice | currency: "USD"
         }}</span>
+      <span class="live-badge" title="Real-time">●</span>
       <app-trend-indicator [value]="item().percentChange" />
     </div>
 
