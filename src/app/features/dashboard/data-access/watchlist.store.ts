@@ -3,7 +3,7 @@ import { forkJoin, of, switchMap } from 'rxjs';
 import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { WatchlistItem } from '../../../shared/models/stock.model';
+import { WatchlistItem, StockSearchResult } from '../../../shared/models/stock.model';
 import { WebSocketService } from '../../../core/services/websocket.service';
 
 @Injectable({ providedIn: 'root' })
@@ -17,6 +17,7 @@ export class WatchlistStore implements OnDestroy {
   readonly items = signal<WatchlistItem[]>([]);
   readonly loading = signal<Set<string>>(new Set());
   readonly error = signal<string | null>(null);
+  private initialized = false;
 
   // Derived state
   readonly count = computed(() => this.items().length);
@@ -26,7 +27,9 @@ export class WatchlistStore implements OnDestroy {
   constructor() {
     effect(() => {
       const symbols = this.items().map(i => i.symbol);
-      this.storage.set('watchlist', symbols);
+      if (this.initialized) {
+        this.storage.set('watchlist', symbols);
+      }
     });
 
     effect(() => {
@@ -44,6 +47,7 @@ export class WatchlistStore implements OnDestroy {
 
   initialize(): void {
     const savedSymbols = this.storage.get<string[]>('watchlist') ?? [];
+    this.initialized = true;
     if (savedSymbols.length === 0) return;
     this.ws.connect();
     savedSymbols.forEach(symbol => {
@@ -85,7 +89,7 @@ export class WatchlistStore implements OnDestroy {
       .pipe(
         switchMap((search) => {
           const match = search.result?.find(
-            (r: any) => r.symbol === symbol || r.displaySymbol === symbol
+            (r: StockSearchResult) => r.symbol === symbol || r.displaySymbol === symbol
           );
           if (!match) {
             throw new Error(`Symbol "${symbol}" not found`);
