@@ -5,6 +5,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { forkJoin, of, catchError } from 'rxjs';
 import { FinnhubApiService } from '../../../../core/services/finnhub-api.service';
 import { MarketCapPipe } from '../../../../shared/pipes/market-cap.pipe';
+import { StockQuote } from '../../../../shared/models/stock.model';
+import { CompanyProfile } from '../../../../shared/models/company.model';
+
+interface ComparisonFetchResult {
+  symbol: string;
+  quote: StockQuote | null;
+  profile: CompanyProfile | null;
+}
 
 export interface ComparisonMetricRow {
   name: string;
@@ -64,7 +72,7 @@ export class ComparisonTableComponent {
     });
   }
 
-  private buildTableRows(results: any[]): ComparisonMetricRow[] {
+  private buildTableRows(results: ComparisonFetchResult[]): ComparisonMetricRow[] {
     const rows: ComparisonMetricRow[] = [
       { name: 'Company Name', key: 'name', format: 'none', values: {} },
       { name: 'Current Price', key: 'c', format: 'currency', values: {} },

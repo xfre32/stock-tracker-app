@@ -45,7 +45,7 @@ export class SearchBarComponent {
     ).subscribe(response => {
       this.suggestions.set(
         (response.result ?? [])
-          .filter((r: any) => r.type === 'Common Stock')
+          .filter((r: StockSearchResult) => r.type === 'Common Stock')
           .slice(0, 8)
       );
     });

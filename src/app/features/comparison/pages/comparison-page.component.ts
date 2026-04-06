@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { NotificationService } from '../../../core/services/notification.service';
 import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
+import { StockSearchResult } from '../../../shared/models/stock.model';
 import { SearchBarComponent } from '../../dashboard/components/search-bar/search-bar.component';
 import { ComparisonTableComponent } from '../components/comparison-table/comparison-table.component';
 import { OverlappingChartComponent } from '../components/overlapping-chart/overlapping-chart.component';
@@ -41,7 +42,7 @@ export class ComparisonPageComponent {
     this.api.searchStock(upperSymbol).subscribe({
       next: (search) => {
         const match = search.result?.find(
-          (r: any) => r.symbol === upperSymbol || r.displaySymbol === upperSymbol
+          (r: StockSearchResult) => r.symbol === upperSymbol || r.displaySymbol === upperSymbol
         );
         if (!match) {
           this.notification.warning(`"${upperSymbol}" is not a valid stock symbol.`);

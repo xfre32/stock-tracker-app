@@ -4,6 +4,21 @@ import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CandleData } from '../../shared/models/candle.model';
 
+interface TwelveDataTimeSeriesResponse {
+  status?: string;
+  message?: string;
+  values?: TwelveDataValue[];
+}
+
+interface TwelveDataValue {
+  datetime: string;
+  open: string;
+  high: string;
+  low: string;
+  close: string;
+  volume: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class TwelveDataApiService {
   private readonly http = inject(HttpClient);
@@ -17,7 +32,7 @@ export class TwelveDataApiService {
    * @param outputsize Number of data points to fetch
    */
   getTimeSeries(symbol: string, interval: string, outputsize: number): Observable<CandleData[]> {
-    return this.http.get<any>(`${this.baseUrl}/time_series`, {
+    return this.http.get<TwelveDataTimeSeriesResponse>(`${this.baseUrl}/time_series`, {
       params: {
         symbol,
         interval,
@@ -34,7 +49,7 @@ export class TwelveDataApiService {
     );
   }
 
-  private transformToCandles(values: any[]): CandleData[] {
+  private transformToCandles(values: TwelveDataValue[]): CandleData[] {
     return values
       .map((v) => {
         // Twelve Data returns 'YYYY-MM-DD' or 'YYYY-MM-DD HH:mm:ss'

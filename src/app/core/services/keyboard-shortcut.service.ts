@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, OnDestroy, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
-export class KeyboardShortcutService {
+export class KeyboardShortcutService implements OnDestroy {
   readonly searchTriggered = signal(false);
 
   private keydownHandler = (event: KeyboardEvent) => {
@@ -17,6 +17,12 @@ export class KeyboardShortcutService {
   constructor() {
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', this.keydownHandler);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', this.keydownHandler);
     }
   }
 }
