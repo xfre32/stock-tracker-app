@@ -130,3 +130,11 @@ body {
 html.dark-theme ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
 }
+
+// ===== Autocomplete Panel Override =====
+.custom-autocomplete-panel {
+  /* Safely mix the primary theme color with the surface background to create a nice tint */
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 8%, var(--mat-sys-surface)) !important;
+  border: 1px solid color-mix(in srgb, var(--mat-sys-primary) 20%, transparent);
+  border-radius: var(--radius-md) !important;
+}

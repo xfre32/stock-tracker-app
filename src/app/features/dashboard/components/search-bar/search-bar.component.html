@@ -1,22 +1,22 @@
 <div class="search-bar">
   <mat-form-field appearance="outline" class="search-bar__field">
     <mat-label>Stock Symbol</mat-label>
-    <input
-      matInput
-      [(ngModel)]="searchValue"
-      placeholder="e.g. AAPL, GOOGL, TSLA"
-      (keydown.enter)="onSubmit()"
-      class="search-bar__input"
-    />
+    <input matInput [formControl]="searchInput" [matAutocomplete]="auto" placeholder="e.g. AAPL, GOOGL, TSLA"
+      (keydown.enter)="onSubmit()" class="search-bar__input" />
     <mat-icon matPrefix>search</mat-icon>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelect($event)" class="custom-autocomplete-panel">
+      @for (item of suggestions(); track item.symbol) {
+      <mat-option [value]="item.symbol" class="autocomplete-option">
+        <div class="autocomplete-item">
+          <span class="autocomplete-symbol">{{ item.symbol }}</span>
+          <span class="autocomplete-name">{{ item.description }}</span>
+        </div>
+      </mat-option>
+      }
+    </mat-autocomplete>
   </mat-form-field>
 
-  <button
-    mat-flat-button
-    color="primary"
-    (click)="onSubmit()"
-    class="search-bar__button"
-  >
+  <button mat-flat-button color="primary" (click)="onSubmit()" class="search-bar__button">
     <mat-icon>add</mat-icon>
     Track Stock
   </button>
