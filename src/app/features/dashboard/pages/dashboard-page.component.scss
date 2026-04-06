@@ -24,7 +24,19 @@
 }
 
 .dashboard__summary {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+.summary-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: color-mix(in srgb, var(--mat-sys-primary) 5%, var(--mat-sys-surface));
+  padding: 4px 16px;
+  border-radius: 100px;
+  border: 1px solid color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
 }
 
 .dashboard__count {
