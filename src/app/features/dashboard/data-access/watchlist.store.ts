@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed, effect } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of, switchMap } from 'rxjs';
 import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -59,47 +59,63 @@ export class WatchlistStore {
   }
 
   private fetchStockData(symbol: string): void {
-    forkJoin({
-      search: this.api.searchStock(symbol),
-      quote: this.api.getQuote(symbol),
-    }).subscribe({
-      next: ({ search, quote }) => {
-        const name = search.result?.[0]?.description ?? symbol;
-        const item: WatchlistItem = {
-          symbol,
-          name,
-          currentPrice: quote.c,
-          openPrice: quote.o,
-          highPrice: quote.h,
-          lowPrice: quote.l,
-          change: quote.d,
-          percentChange: quote.dp,
-          previousClose: quote.pc,
-        };
-        this.items.update(items => {
-          const existing = items.findIndex(i => i.symbol === symbol);
-          if (existing >= 0) {
-            const copy = [...items];
-            copy[existing] = item;
-            return copy;
+    this.api
+      .searchStock(symbol)
+      .pipe(
+        switchMap((search) => {
+          const match = search.result?.find(
+            (r: any) => r.symbol === symbol || r.displaySymbol === symbol
+          );
+          if (!match) {
+            throw new Error(`Symbol "${symbol}" not found`);
           }
-          return [...items, item];
-        });
-        this.loading.update(set => {
-          const newSet = new Set(set);
-          newSet.delete(symbol);
-          return newSet;
-        });
-      },
-      error: () => {
-        this.loading.update(set => {
-          const newSet = new Set(set);
-          newSet.delete(symbol);
-          return newSet;
-        });
-        this.items.update(items => items.filter(i => i.symbol !== symbol));
-        this.notification.error(`Failed to load data for ${symbol}`);
-      },
-    });
+          return forkJoin({
+            quote: this.api.getQuote(symbol),
+            name: of(match.description ?? symbol),
+          });
+        })
+      )
+      .subscribe({
+        next: ({ quote, name }) => {
+          const item: WatchlistItem = {
+            symbol,
+            name,
+            currentPrice: quote.c,
+            openPrice: quote.o,
+            highPrice: quote.h,
+            lowPrice: quote.l,
+            change: quote.d,
+            percentChange: quote.dp,
+            previousClose: quote.pc,
+          };
+          this.items.update((items) => {
+            const existing = items.findIndex((i) => i.symbol === symbol);
+            if (existing >= 0) {
+              const copy = [...items];
+              copy[existing] = item;
+              return copy;
+            }
+            return [...items, item];
+          });
+          this.loading.update((set) => {
+            const newSet = new Set(set);
+            newSet.delete(symbol);
+            return newSet;
+          });
+        },
+        error: (err) => {
+          this.loading.update((set) => {
+            const newSet = new Set(set);
+            newSet.delete(symbol);
+            return newSet;
+          });
+          this.items.update((items) => items.filter((i) => i.symbol !== symbol));
+          this.notification.warning(
+            err.message?.includes('not found')
+              ? `"${symbol}" is not a valid stock symbol`
+              : `Failed to load data for ${symbol}`
+          );
+        },
+      });
   }
 }
