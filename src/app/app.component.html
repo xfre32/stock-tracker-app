@@ -1,7 +1,26 @@
-<div class="app-shell">
-  <app-header />
-  <main class="app-content">
-    <router-outlet />
-  </main>
-  <app-footer />
-</div>
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #sidenav mode="over" class="app-sidenav">
+    <mat-nav-list (click)="sidenav.close()">
+      <div class="sidenav-header">
+        <mat-icon class="sidenav-logo">show_chart</mat-icon>
+        <span class="sidenav-title">StockTracker</span>
+      </div>
+      <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/compare" routerLinkActive="active">
+        <mat-icon matListItemIcon>compare_arrows</mat-icon>
+        <span matListItemTitle>Compare</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="app-shell">
+    <app-header (toggleSidenav)="sidenav.toggle()" />
+    <main class="app-content">
+      <router-outlet />
+    </main>
+    <app-footer />
+  </mat-sidenav-content>
+</mat-sidenav-container>

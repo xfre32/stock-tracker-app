@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,4 +14,5 @@ import { ThemeService } from '../../../core/services/theme.service';
 })
 export class HeaderComponent {
   readonly themeService = inject(ThemeService);
+  readonly toggleSidenav = output<void>();
 }

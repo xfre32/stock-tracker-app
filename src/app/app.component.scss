@@ -1,3 +1,43 @@
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-sidenav {
+  width: 260px;
+  background-color: var(--mat-sys-surface);
+  border-right: 1px solid color-mix(in srgb, var(--mat-sys-outline) 15%, transparent);
+}
+
+.sidenav-header {
+  padding: 24px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--mat-sys-outline) 8%, transparent);
+  margin-bottom: 8px;
+}
+
+.sidenav-logo {
+  color: var(--mat-sys-primary);
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.sidenav-title {
+  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.app-sidenav .active {
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
+  color: var(--mat-sys-primary) !important;
+}
+
 .app-shell {
   display: flex;
   flex-direction: column;
@@ -9,4 +49,11 @@
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .app-content {
+    padding: 16px;
+  }
 }
