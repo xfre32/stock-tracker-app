@@ -1,4 +1,4 @@
-import { Component, input, effect, signal, inject, ElementRef, ViewChild, OnDestroy, HostListener } from '@angular/core';
+import { Component, input, effect, signal, inject, ElementRef, ViewChild, OnDestroy, HostListener, computed } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { createChart, IChartApi, ISeriesApi, Time } from 'lightweight-charts';
 import { forkJoin, catchError, of } from 'rxjs';
@@ -18,6 +18,13 @@ export class OverlappingChartComponent implements OnDestroy {
   @ViewChild('chartContainerRef') chartContainerRef!: ElementRef<HTMLElement>;
   
   readonly symbols = input.required<string[]>();
+  
+  readonly legendItems = computed(() => {
+    return this.symbols().map((symbol, index) => ({
+      symbol,
+      color: SERIES_COLORS[index % SERIES_COLORS.length],
+    }));
+  });
   
   private readonly twelveDataApi = inject(TwelveDataApiService);
   private readonly themeService = inject(ThemeService);

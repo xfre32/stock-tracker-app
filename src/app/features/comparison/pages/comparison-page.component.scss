@@ -50,3 +50,9 @@
 .comparison__charts {
   margin-bottom: 32px;
 }
+
+@media (max-width: 600px) {
+  .comparison__empty {
+    padding: 32px 16px;
+  }
+}
