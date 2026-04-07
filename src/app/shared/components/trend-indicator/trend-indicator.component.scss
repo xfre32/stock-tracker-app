@@ -5,6 +5,7 @@
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: 0.9rem;
+  vertical-align: sub;
 }
 
 .trend mat-icon {
@@ -16,9 +17,11 @@
 .positive {
   color: var(--color-positive);
 }
+
 .negative {
   color: var(--color-negative);
 }
+
 .neutral {
   color: var(--color-neutral);
 }

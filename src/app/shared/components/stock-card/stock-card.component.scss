@@ -56,48 +56,27 @@
 
 .stock-card__price {
   font-size: 1.5rem;
+  font-weight: 500;
+  // line-height: 1;
+  transition: color 0.6s ease-out;
+}
+
+.price--up {
+  color: #22c55e !important;
+  transition: none;
+  /* Instant color change */
+}
+
+.price--down {
+  color: #ef4444 !important;
+  transition: none;
+  /* Instant color change */
 }
 
 .stock-card__metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px 16px;
-}
-
-@keyframes price-flash {
-  0% {
-    background-color: rgba(59, 130, 246, 0.15);
-  }
-
-  100% {
-    background-color: transparent;
-  }
-}
-
-.stock-card__updated {
-  animation: price-flash 0.6s ease-out;
-}
-
-.live-badge {
-  color: #22c55e;
-  font-size: 0.6rem;
-  animation: pulsing-live 2s infinite ease-in-out;
-  margin-top: -8px;
-  cursor: help;
-}
-
-@keyframes pulsing-live {
-
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.8);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
 }
 
 .metric {
