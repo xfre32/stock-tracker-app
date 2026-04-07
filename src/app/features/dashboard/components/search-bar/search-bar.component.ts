@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FinnhubApiService } from '../../../../core/services/finnhub-api.service';
 import { StockSearchResult } from '../../../../shared/models/stock.model';
-import { catchError, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { KeyboardShortcutService } from '../../../../core/services/keyboard-shortcut.service';
 import { ElementRef, ViewChild, effect } from '@angular/core';
@@ -22,7 +22,7 @@ import { ElementRef, ViewChild, effect } from '@angular/core';
 export class SearchBarComponent {
   readonly searchInput = new FormControl('');
   readonly suggestions = signal<StockSearchResult[]>([]);
-  readonly search = output<string>();
+  readonly searchSubmitted = output<string>();
 
   @ViewChild('searchInputRef') inputElement!: ElementRef<HTMLInputElement>;
 
@@ -38,10 +38,16 @@ export class SearchBarComponent {
     this.searchInput.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      filter(term => !!term && term.trim().length >= 1),
-      switchMap(term => this.api.searchStock(term!).pipe(
-        catchError(() => of({ count: 0, result: [] }))
-      )),
+      switchMap(term => {
+        const query = term?.trim() ?? '';
+        if (query.length < 2) {
+          this.suggestions.set([]);
+          return of({ count: 0, result: [] });
+        }
+        return this.api.searchStock(query).pipe(
+          catchError(() => of({ count: 0, result: [] }))
+        );
+      }),
     ).subscribe(response => {
       this.suggestions.set(
         (response.result ?? [])
@@ -54,13 +60,13 @@ export class SearchBarComponent {
   onSubmit(): void {
     const value = this.searchInput.value?.trim().toUpperCase();
     if (value) {
-      this.search.emit(value);
+      this.searchSubmitted.emit(value);
       this.searchInput.setValue('');
     }
   }
 
   onSelect(event: MatAutocompleteSelectedEvent): void {
-    this.search.emit(event.option.value);
+    this.searchSubmitted.emit(event.option.value);
     this.searchInput.setValue('');
   }
 }

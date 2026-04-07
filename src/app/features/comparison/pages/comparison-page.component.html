@@ -4,7 +4,7 @@
     <p class="comparison__subtitle">Visualize and compare up to 3 stocks side-by-side</p>
   </div>
 
-  <app-search-bar (search)="addStock($event)" />
+  <app-search-bar (searchSubmitted)="addStock($event)" />
 
   <div class="comparison__content">
     @if (symbols().length > 0) {
