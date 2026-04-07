@@ -23,7 +23,11 @@
       <mat-tab label="Chart">
         <ng-template matTabContent>
           <div class="tab-content">
-            <app-price-chart [symbol]="symbol()" />
+            @defer (on idle) {
+              <app-price-chart [symbol]="symbol()" />
+            } @placeholder {
+              <div class="tab-loading"><mat-spinner diameter="32"></mat-spinner></div>
+            }
           </div>
         </ng-template>
       </mat-tab>
@@ -31,7 +35,11 @@
       <mat-tab label="Sentiment">
         <ng-template matTabContent>
           <div class="tab-content">
-            <app-insider-sentiment [sentiment]="sentiment()" />
+            @defer (on idle) {
+              <app-insider-sentiment [sentiment]="sentiment()" />
+            } @placeholder {
+              <div class="tab-loading"><mat-spinner diameter="32"></mat-spinner></div>
+            }
           </div>
         </ng-template>
       </mat-tab>
@@ -39,7 +47,11 @@
       <mat-tab label="News">
         <ng-template matTabContent>
           <div class="tab-content">
-            <app-news-feed [news]="news()" />
+            @defer (on idle) {
+              <app-news-feed [news]="news()" />
+            } @placeholder {
+              <div class="tab-loading"><mat-spinner diameter="32"></mat-spinner></div>
+            }
           </div>
         </ng-template>
       </mat-tab>
