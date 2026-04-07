@@ -25,6 +25,8 @@ function getTTL(url: string): number {
   return 60_000; // default 1 minute
 }
 
+const MAX_CACHE_SIZE = 100;
+
 export const cacheInterceptor: HttpInterceptorFn = (req, next) => {
   // Only cache GET requests
   if (req.method !== 'GET') return next(req);
@@ -32,13 +34,24 @@ export const cacheInterceptor: HttpInterceptorFn = (req, next) => {
   const cacheKey = req.urlWithParams;
   const cached = cache.get(cacheKey);
 
-  if (cached && cached.expiry > Date.now()) {
-    return of(cached.response.clone());
+  // LRU: If hit, move to end of Map and return if not expired
+  if (cached) {
+    cache.delete(cacheKey);
+    if (cached.expiry > Date.now()) {
+      cache.set(cacheKey, cached); // Re-insert at the end
+      return of(cached.response.clone());
+    }
   }
 
   return next(req).pipe(
     tap(event => {
       if (event instanceof HttpResponse && event.status === 200) {
+        // Eviction policy: Remove oldest if full (F-PERF-003)
+        if (cache.size >= MAX_CACHE_SIZE) {
+          const firstKey = cache.keys().next().value;
+          if (firstKey !== undefined) cache.delete(firstKey);
+        }
+
         cache.set(cacheKey, {
           response: event.clone(),
           expiry: Date.now() + getTTL(req.url),

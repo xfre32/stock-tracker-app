@@ -1,8 +1,9 @@
-import { Component, input, effect, signal, inject } from '@angular/core';
-import { CurrencyPipe, DecimalPipe, PercentPipe } from '@angular/common';
+import { Component, input, signal, inject } from '@angular/core';
+import { CurrencyPipe, PercentPipe, CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { forkJoin, of, catchError } from 'rxjs';
+import { forkJoin, of, catchError, switchMap, tap, finalize } from 'rxjs';
+import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FinnhubApiService } from '../../../../core/services/finnhub-api.service';
 import { MarketCapPipe } from '../../../../shared/pipes/market-cap.pipe';
 import { StockQuote } from '../../../../shared/models/stock.model';
@@ -18,13 +19,13 @@ export interface ComparisonMetricRow {
   name: string;
   key: string;
   format: 'currency' | 'decimal' | 'percent' | 'none' | 'marketCap';
-  values: { [symbol: string]: number | string | null };
+  values: Record<string, number | string | null>;
 }
 
 @Component({
   selector: 'app-comparison-table',
   standalone: true,
-  imports: [MatTableModule, MatProgressSpinnerModule, CurrencyPipe, DecimalPipe, PercentPipe, MarketCapPipe],
+  imports: [CommonModule, MatTableModule, MatProgressSpinnerModule, CurrencyPipe, PercentPipe, MarketCapPipe],
   templateUrl: './comparison-table.component.html',
   styleUrl: './comparison-table.component.scss',
 })
@@ -38,38 +39,42 @@ export class ComparisonTableComponent {
   readonly displayedColumns = signal<string[]>(['metric']);
 
   constructor() {
-    effect(() => {
-      const activeSymbols = this.symbols();
-      this.displayedColumns.set(['metric', ...activeSymbols]);
-      
-      if (activeSymbols.length === 0) {
-        this.dataSource.set([]);
-        return;
-      }
+    // Reactive data flow using switchMap to handle race conditions (F-REL-002)
+    toObservable(this.symbols)
+      .pipe(
+        tap((activeSymbols) => {
+          this.displayedColumns.set(['metric', ...activeSymbols]);
+          if (activeSymbols.length === 0) {
+            this.dataSource.set([]);
+          }
+        }),
+        switchMap((activeSymbols) => {
+          if (activeSymbols.length === 0) return of([]);
 
-      this.loading.set(true);
-      this.error.set(null);
+          this.loading.set(true);
+          this.error.set(null);
 
-      // Fetch quote and profile for all symbols
-      const requests = activeSymbols.map(symbol => 
-        forkJoin({
-          symbol: of(symbol),
-          quote: this.api.getQuote(symbol).pipe(catchError(() => of(null))),
-          profile: this.api.getCompanyProfile(symbol).pipe(catchError(() => of(null)))
-        })
-      );
+          const requests = activeSymbols.map((symbol) =>
+            forkJoin({
+              symbol: of(symbol),
+              quote: this.api.getQuote(symbol).pipe(catchError(() => of(null))),
+              profile: this.api.getCompanyProfile(symbol).pipe(catchError(() => of(null))),
+            })
+          );
 
-      forkJoin(requests).subscribe({
-        next: (results) => {
-          this.dataSource.set(this.buildTableRows(results));
-          this.loading.set(false);
-        },
-        error: (err) => {
-          this.error.set('Failed to load comparison data.');
-          this.loading.set(false);
-        }
+          return forkJoin(requests).pipe(
+            finalize(() => this.loading.set(false)),
+            catchError(() => {
+              this.error.set('Failed to load comparison data.');
+              return of([]);
+            })
+          );
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe((results) => {
+        this.dataSource.set(this.buildTableRows(results as ComparisonFetchResult[]));
       });
-    });
   }
 
   private buildTableRows(results: ComparisonFetchResult[]): ComparisonMetricRow[] {
@@ -98,7 +103,7 @@ export class ComparisonTableComponent {
       rows.find(r => r.key === 'h')!.values[sym] = quote?.h ?? null;
       rows.find(r => r.key === 'l')!.values[sym] = quote?.l ?? null;
       rows.find(r => r.key === 'pc')!.values[sym] = quote?.pc ?? null;
-      rows.find(r => r.key === 'marketCapitalization')!.values[sym] = profile?.marketCapitalization 
+      rows.find(r => r.key === 'marketCapitalization')!.values[sym] = profile?.marketCapitalization
         ? profile.marketCapitalization
         : null;
     });

@@ -24,9 +24,12 @@ export class WatchlistStore implements OnDestroy {
   readonly isEmpty = computed(() => this.items().length === 0 && this.loading().size === 0);
   readonly symbols = computed(() => this.items().map(i => i.symbol));
 
+  // Decouple membership from live price updates for persistence (F-PERF-001)
+  private readonly persistedSymbols = computed(() => this.items().map(i => i.symbol).sort());
+
   constructor() {
     effect(() => {
-      const symbols = this.items().map(i => i.symbol);
+      const symbols = this.persistedSymbols();
       if (this.initialized) {
         this.storage.set('watchlist', symbols);
       }
@@ -53,7 +56,6 @@ export class WatchlistStore implements OnDestroy {
     savedSymbols.forEach(symbol => {
       this.addLoadingPlaceholder(symbol);
       this.fetchStockData(symbol);
-      this.ws.subscribe(symbol);
     });
   }
 
@@ -68,15 +70,19 @@ export class WatchlistStore implements OnDestroy {
       return;
     }
     this.addLoadingPlaceholder(upperSymbol);
-    this.fetchStockData(upperSymbol);
     this.ws.connect();
-    this.ws.subscribe(upperSymbol);
+    this.fetchStockData(upperSymbol);
   }
 
   removeStock(symbol: string): void {
     this.items.update(items => items.filter(i => i.symbol !== symbol));
     this.notification.success(`${symbol} removed from watchlist`);
     this.ws.unsubscribe(symbol);
+
+    // Disconnect if no active tracked stocks (F-REL-001)
+    if (this.persistedSymbols().length === 0) {
+      this.ws.disconnect();
+    }
   }
 
   private addLoadingPlaceholder(symbol: string): void {
@@ -102,6 +108,7 @@ export class WatchlistStore implements OnDestroy {
       )
       .subscribe({
         next: ({ quote, name }) => {
+          this.ws.subscribe(symbol); // Subscribe only after successful validation (F-REL-001)
           const item: WatchlistItem = {
             symbol,
             name,
@@ -129,6 +136,7 @@ export class WatchlistStore implements OnDestroy {
           });
         },
         error: (err) => {
+          this.ws.unsubscribe(symbol); // Clean up on validation failure (F-REL-001)
           this.loading.update((set) => {
             const newSet = new Set(set);
             newSet.delete(symbol);
