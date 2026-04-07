@@ -1,10 +1,13 @@
-import { Injectable, signal, effect, inject, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, signal, effect, inject, Renderer2, RendererFactory2, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { StorageService } from './storage.service';
 
 export type Theme = 'light-theme' | 'dark-theme';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   private readonly storage = inject(StorageService);
   private readonly renderer: Renderer2;
 
@@ -16,6 +19,7 @@ export class ThemeService {
     this.renderer = rendererFactory.createRenderer(null, null);
 
     effect(() => {
+      if (!this.isBrowser) return;
       const current = this.theme();
       const opposite: Theme = current === 'dark-theme' ? 'light-theme' : 'dark-theme';
       this.renderer.removeClass(document.documentElement, opposite);
@@ -31,6 +35,7 @@ export class ThemeService {
   private loadInitialTheme(): Theme {
     const saved = this.storage.get<Theme>('theme');
     if (saved) return saved;
+    if (!this.isBrowser) return 'light-theme';
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme';
   }
 }
