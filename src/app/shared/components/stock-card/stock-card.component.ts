@@ -18,16 +18,16 @@ export class StockCardComponent {
   readonly item = input.required<WatchlistItem>();
   readonly remove = output<string>();
   readonly viewDetails = output<string>();
-  readonly flashActive = signal<boolean>(false);
+  readonly updateDirection = signal<'up' | 'down' | null>(null);
 
   constructor() {
     let previousPrice: number | null = null;
     effect(() => {
       const currentPrice = this.item().currentPrice;
       if (previousPrice !== null && currentPrice !== previousPrice) {
-        // Price changed — trigger flash
-        this.flashActive.set(true);
-        setTimeout(() => this.flashActive.set(false), 600); // match animation duration
+        // Price changed
+        this.updateDirection.set(currentPrice > previousPrice ? 'up' : 'down');
+        setTimeout(() => this.updateDirection.set(null), 1000); // 1s visible state before fade out
       }
       previousPrice = currentPrice;
     });
