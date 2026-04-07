@@ -4,10 +4,11 @@ const basePreset = createEsmPreset();
 
 module.exports = {
   ...basePreset,
-  setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   moduleNameMapper: {
     ...(basePreset.moduleNameMapper ?? {}),
     '^src/(.*)$': '<rootDir>/src/$1',
   },
-  transformIgnorePatterns: ['node_modules/(?!(tslib|rxjs)/)'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$|@angular|rxjs|tslib|lightweight-charts)/)',
+  ],
 };
