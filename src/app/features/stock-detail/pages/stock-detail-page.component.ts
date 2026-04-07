@@ -1,7 +1,7 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { forkJoin, of, switchMap, tap, finalize, catchError } from 'rxjs';
+import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,7 +30,7 @@ import { WatchlistStore } from '../../dashboard/data-access/watchlist.store';
   templateUrl: './stock-detail-page.component.html',
   styleUrl: './stock-detail-page.component.scss',
 })
-export class StockDetailPageComponent implements OnInit {
+export class StockDetailPageComponent {
   readonly symbol = input.required<string>();
 
   private readonly api = inject(FinnhubApiService);
@@ -43,19 +43,53 @@ export class StockDetailPageComponent implements OnInit {
   readonly sentiment = signal<InsiderSentimentData[]>([]);
   readonly news = signal<CompanyNews[]>([]);
 
-  ngOnInit(): void {
-    this.loadData();
+  constructor() {
+    // Reactive data flow responsive to symbol changes (F-REL-003)
+    toObservable(this.symbol)
+      .pipe(
+        tap(() => this.resetState()),
+        switchMap((sym) => {
+          if (!sym) return of(null);
+
+          this.loading.set(true);
+          const today = new Date().toISOString().split('T')[0];
+          const sixMonthsAgo = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+          // Use switchMap to ensure only results from the latest symbol are processed
+          return forkJoin({
+            profile: this.api.getCompanyProfile(sym).pipe(catchError(() => of(null))),
+            quote: this.api.getQuote(sym).pipe(catchError(() => of(null))),
+            sentiment: this.api.getInsiderSentiment(sym, sixMonthsAgo, today).pipe(
+              catchError(() => of({ data: [], symbol: sym }))
+            ),
+            news: this.api.getCompanyNews(sym, sixMonthsAgo, today).pipe(catchError(() => of([]))),
+          }).pipe(
+            finalize(() => this.loading.set(false)),
+            catchError(() => of(null))
+          );
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.profile.set(data.profile);
+          this.quote.set(data.quote);
+          this.sentiment.set(data.sentiment?.data ?? []);
+          this.news.set(data.news ?? []);
+        }
+      });
   }
 
-  goBack(): void {
-    this.router.navigate(['/']);
-  }
-
-  private loadData(): void {
+  private resetState(): void {
     const sym = this.symbol();
+    this.loading.set(true);
+    this.profile.set(null);
+    this.quote.set(null);
+    this.sentiment.set([]);
+    this.news.set([]);
 
-    // Pre-populate quote from watchlist if available for "instant-on" feel
-    const watchlistItem = this.watchlistStore.items().find(i => i.symbol === sym);
+    // Pre-populate quote from watchlist for "instant-on" feel
+    const watchlistItem = this.watchlistStore.items().find((i) => i.symbol === sym);
     if (watchlistItem) {
       this.quote.set({
         c: watchlistItem.currentPrice,
@@ -68,26 +102,9 @@ export class StockDetailPageComponent implements OnInit {
         t: 0,
       });
     }
+  }
 
-    const today = new Date().toISOString().split('T')[0];
-    const sixMonthsAgo = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-
-    forkJoin({
-      profile: this.api.getCompanyProfile(sym).pipe(catchError(() => of(null))),
-      quote: this.api.getQuote(sym).pipe(catchError(() => of(null))),
-      sentiment: this.api.getInsiderSentiment(sym, sixMonthsAgo, today).pipe(catchError(() => of({ data: [], symbol: sym }))),
-      news: this.api.getCompanyNews(sym, sixMonthsAgo, today).pipe(catchError(() => of([]))),
-    }).subscribe({
-      next: (data) => {
-        this.profile.set(data.profile);
-        this.quote.set(data.quote);
-        this.sentiment.set(data.sentiment?.data ?? []);
-        this.news.set(data.news ?? []);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.loading.set(false);
-      }
-    });
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 }
