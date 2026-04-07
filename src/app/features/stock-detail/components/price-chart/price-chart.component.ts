@@ -1,7 +1,7 @@
 import {
   Component, ElementRef, OnDestroy, afterNextRender, inject, input, effect, signal,
 } from '@angular/core';
-import { createChart, IChartApi, ISeriesApi, ColorType } from 'lightweight-charts';
+import { createChart, IChartApi, ISeriesApi, ColorType, Time } from 'lightweight-charts';
 import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +26,7 @@ export class PriceChartComponent implements OnDestroy {
   private readonly twelveDataApi = inject(TwelveDataApiService);
 
   private chart: IChartApi | null = null;
-  private series: ISeriesApi<any> | null = null;
+  private series: ISeriesApi<'Area' | 'Candlestick'> | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private dataSubscription: Subscription | null = null;
 
@@ -149,7 +149,7 @@ export class PriceChartComponent implements OnDestroy {
     if (!data || data.length === 0) return;
 
     if (this.chartType === 'candlestick') {
-      this.series = this.chart.addCandlestickSeries({
+      const candlestickSeries = this.chart.addCandlestickSeries({
         upColor: '#16a34a',
         downColor: '#dc2626',
         borderUpColor: '#16a34a',
@@ -157,15 +157,23 @@ export class PriceChartComponent implements OnDestroy {
         wickUpColor: '#16a34a',
         wickDownColor: '#dc2626',
       });
-      this.series?.setData(data as any);
+      candlestickSeries.setData(data.map(d => ({
+        time: d.time as Time,
+        open: d.open,
+        high: d.high,
+        low: d.low,
+        close: d.close,
+      })));
+      this.series = candlestickSeries;
     } else {
-      this.series = this.chart.addAreaSeries({
+      const areaSeries = this.chart.addAreaSeries({
         lineColor: '#3b82f6',
         topColor: 'rgba(59, 130, 246, 0.4)',
         bottomColor: 'rgba(59, 130, 246, 0.0)',
         lineWidth: 2,
       });
-      this.series?.setData(data.map((d: CandleData) => ({ time: d.time, value: d.close })) as any);
+      areaSeries.setData(data.map((d: CandleData) => ({ time: d.time as Time, value: d.close })));
+      this.series = areaSeries;
     }
 
     this.chart.timeScale().fitContent();
