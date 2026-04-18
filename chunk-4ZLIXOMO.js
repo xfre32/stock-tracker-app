@@ -1,0 +1,1 @@
+var e={production:!0,finnhub:{baseUrl:"https://finnhub.io/api/v1",apiKey:"bu4f8kn48v6uehqi3cqg"},twelveData:{baseUrl:"https://api.twelvedata.com",apiKey:"6520cfa158af483489158dde25d1a6fe"}};export{e as a};
