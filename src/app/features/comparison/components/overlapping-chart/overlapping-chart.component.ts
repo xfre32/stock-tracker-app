@@ -1,7 +1,8 @@
 import { Component, input, effect, signal, inject, ElementRef, ViewChild, OnDestroy, AfterViewInit, computed } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { createChart, IChartApi, ISeriesApi, Time } from 'lightweight-charts';
-import { forkJoin, catchError, of, switchMap, tap, finalize, combineLatest } from 'rxjs';
+import { forkJoin, of, combineLatest } from 'rxjs';
+import { catchError, switchMap, tap, finalize } from 'rxjs/operators';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TwelveDataApiService } from '../../../../core/services/twelve-data-api.service';
 import { ThemeService } from '../../../../core/services/theme.service';

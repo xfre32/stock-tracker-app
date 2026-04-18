@@ -1,6 +1,7 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin, of, switchMap, tap, finalize, catchError } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { switchMap, tap, finalize, catchError } from 'rxjs/operators';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
