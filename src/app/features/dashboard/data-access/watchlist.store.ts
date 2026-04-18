@@ -1,5 +1,6 @@
 import { Injectable, inject, signal, computed, effect, OnDestroy } from '@angular/core';
-import { forkJoin, of, switchMap } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { NotificationService } from '../../../core/services/notification.service';
