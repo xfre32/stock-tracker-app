@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { jest } from '@jest/globals';
 import { WatchlistStore } from './watchlist.store';
-import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
+import { StockApiService } from '../../../core/services/stock-api.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { WebSocketService } from '../../../core/services/websocket.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -42,7 +42,7 @@ describe('WatchlistStore', () => {
     TestBed.configureTestingModule({
       providers: [
         WatchlistStore,
-        { provide: FinnhubApiService, useValue: apiMock },
+        { provide: StockApiService, useValue: apiMock },
         { provide: StorageService, useValue: storageMock },
         { provide: WebSocketService, useValue: wsMock },
         { provide: NotificationService, useValue: notificationMock },

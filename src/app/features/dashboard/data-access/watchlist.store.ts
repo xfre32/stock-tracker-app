@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed, effect, OnDestroy } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
+import { StockApiService } from '../../../core/services/stock-api.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { WatchlistItem, StockSearchResult } from '../../../shared/models/stock.model';
@@ -9,7 +9,7 @@ import { WebSocketService } from '../../../core/services/websocket.service';
 
 @Injectable({ providedIn: 'root' })
 export class WatchlistStore implements OnDestroy {
-  private readonly api = inject(FinnhubApiService);
+  private readonly api = inject(StockApiService);
   private readonly storage = inject(StorageService);
   private readonly notification = inject(NotificationService);
   private readonly ws = inject(WebSocketService);

@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
+import { StockApiService } from '../../../core/services/stock-api.service';
 import { CompanyProfileComponent } from '../components/company-profile/company-profile.component';
 import { KeyMetricsComponent } from '../components/key-metrics/key-metrics.component';
 import { PriceChartComponent } from '../components/price-chart/price-chart.component';
@@ -34,7 +34,7 @@ import { WatchlistStore } from '../../dashboard/data-access/watchlist.store';
 export class StockDetailPageComponent {
   readonly symbol = input.required<string>();
 
-  private readonly api = inject(FinnhubApiService);
+  private readonly api = inject(StockApiService);
   private readonly router = inject(Router);
   private readonly watchlistStore = inject(WatchlistStore);
 

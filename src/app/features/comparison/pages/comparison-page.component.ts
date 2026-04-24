@@ -2,7 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { NotificationService } from '../../../core/services/notification.service';
-import { FinnhubApiService } from '../../../core/services/finnhub-api.service';
+import { StockApiService } from '../../../core/services/stock-api.service';
 import { StockSearchResult } from '../../../shared/models/stock.model';
 import { SearchBarComponent } from '../../dashboard/components/search-bar/search-bar.component';
 import { ComparisonTableComponent } from '../components/comparison-table/comparison-table.component';
@@ -23,7 +23,7 @@ import { OverlappingChartComponent } from '../components/overlapping-chart/overl
 })
 export class ComparisonPageComponent {
   readonly symbols = signal<string[]>([]);
-  private readonly api = inject(FinnhubApiService);
+  private readonly api = inject(StockApiService);
   private readonly notification = inject(NotificationService);
 
   addStock(symbol: string): void {

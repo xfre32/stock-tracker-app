@@ -4,7 +4,7 @@ import { createChart, IChartApi, ISeriesApi, Time } from 'lightweight-charts';
 import { forkJoin, of, combineLatest } from 'rxjs';
 import { catchError, switchMap, tap, finalize } from 'rxjs/operators';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TwelveDataApiService } from '../../../../core/services/twelve-data-api.service';
+import { ChartApiService } from '../../../../core/services/chart-api.service';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { CandleData } from '../../../../shared/models/candle.model';
 
@@ -29,7 +29,7 @@ export class OverlappingChartComponent implements OnDestroy, AfterViewInit {
     }));
   });
   
-  private readonly twelveDataApi = inject(TwelveDataApiService);
+  private readonly chartApi = inject(ChartApiService);
   private readonly themeService = inject(ThemeService);
   
   readonly loading = signal<boolean>(false);
@@ -64,7 +64,7 @@ export class OverlappingChartComponent implements OnDestroy, AfterViewInit {
           this.error.set(null);
 
           const requests = symbolsToFetch.map((symbol) =>
-            this.twelveDataApi.getTimeSeries(symbol, '1day', 66).pipe(
+            this.chartApi.getTimeSeries(symbol, '1day', 66).pipe(
               catchError(() => of(null)) // 3 months data (approx 66 trading days)
             )
           );

@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ThemeService } from '../../../../core/services/theme.service';
-import { TwelveDataApiService } from '../../../../core/services/twelve-data-api.service';
+import { ChartApiService } from '../../../../core/services/chart-api.service';
 import { CandleData } from '../../../../shared/models/candle.model';
 import { Subscription } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class PriceChartComponent implements OnDestroy {
 
   private readonly elRef = inject(ElementRef);
   private readonly themeService = inject(ThemeService);
-  private readonly twelveDataApi = inject(TwelveDataApiService);
+  private readonly chartApi = inject(ChartApiService);
 
   private chart: IChartApi | null = null;
   private series: ISeriesApi<'Area' | 'Candlestick'> | null = null;
@@ -69,7 +69,7 @@ export class PriceChartComponent implements OnDestroy {
     this.chartLoading.set(true);
     const tf = this.selectedTimeframe();
 
-    this.dataSubscription = this.twelveDataApi
+    this.dataSubscription = this.chartApi
       .getTimeSeries(this.symbol(), tf.interval, tf.outputsize)
       .subscribe({
         next: (data) => {

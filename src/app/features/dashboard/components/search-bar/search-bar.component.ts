@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FinnhubApiService } from '../../../../core/services/finnhub-api.service';
+import { StockApiService } from '../../../../core/services/stock-api.service';
 import { StockSearchResult } from '../../../../shared/models/stock.model';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -26,7 +26,7 @@ export class SearchBarComponent {
 
   @ViewChild('searchInputRef') inputElement!: ElementRef<HTMLInputElement>;
 
-  private readonly api = inject(FinnhubApiService);
+  private readonly api = inject(StockApiService);
   private readonly shortcuts = inject(KeyboardShortcutService);
 
   constructor() {

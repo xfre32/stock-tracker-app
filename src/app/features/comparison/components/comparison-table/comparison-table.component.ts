@@ -5,7 +5,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap, tap, finalize } from 'rxjs/operators';
 import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FinnhubApiService } from '../../../../core/services/finnhub-api.service';
+import { StockApiService } from '../../../../core/services/stock-api.service';
 import { MarketCapPipe } from '../../../../shared/pipes/market-cap.pipe';
 import { StockQuote } from '../../../../shared/models/stock.model';
 import { CompanyProfile } from '../../../../shared/models/company.model';
@@ -32,7 +32,7 @@ export interface ComparisonMetricRow {
 })
 export class ComparisonTableComponent {
   readonly symbols = input.required<string[]>();
-  private readonly api = inject(FinnhubApiService);
+  private readonly api = inject(StockApiService);
 
   readonly loading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
