@@ -26,6 +26,12 @@ export class AuthService {
     }).pipe(tap(res => this.storeTokens(res)));
   }
 
+  refresh(refreshToken: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/auth/refresh`, {
+      refreshToken
+    }).pipe(tap(res => this.storeTokens(res)));
+  }
+
   logout(): void {
     this.storage.remove('accessToken');
     this.storage.remove('refreshToken');

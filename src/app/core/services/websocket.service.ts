@@ -1,67 +1,67 @@
-import { Injectable, signal } from "@angular/core";
+import { Injectable, signal, OnDestroy } from '@angular/core';
+import { RxStomp } from '@stomp/rx-stomp';
 import { environment } from '../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class WebSocketService {
-    private socket: WebSocket | null = null;
-    private readonly apiKey = environment.finnhub.apiKey;
-    private subscribedSymbols = new Set<string>();
+export class WebSocketService implements OnDestroy {
+  private stomp: RxStomp | null = null;
+  private subscription: Subscription | null = null;
 
-    private intentionalDisconnect = false;
+  // Expose a signal for the latest trade
+  readonly lastTrade = signal<{ symbol: string; price: number; timestamp: number } | null>(null);
 
-    // Expose a signal for the latest trade
-    readonly lastTrade = signal<{ symbol: string; price: number; timestamp: number } | null>(null);
+  connect(): void {
+    if (this.stomp) return;
 
-    connect(): void {
-        if (this.socket) return;
-        this.intentionalDisconnect = false;
-        this.socket = new WebSocket(`wss://ws.finnhub.io?token=${this.apiKey}`);
-
-        this.socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.type === 'trade' && data.data?.length > 0) {
-                const trade = data.data[data.data.length - 1]; // latest trade
-                this.lastTrade.set({
-                    symbol: trade.s,
-                    price: trade.p,
-                    timestamp: trade.t,
-                });
-            }
-        };
-
-        this.socket.onopen = () => {
-            // Re-subscribe to any pending symbols
-            this.subscribedSymbols.forEach(s => this.sendSubscriptionStatus(s, 'subscribe'));
-        };
-
-        this.socket.onclose = () => {
-            this.socket = null;
-            if (!this.intentionalDisconnect) {
-                setTimeout(() => this.connect(), 5000);
-            }
-        };
-    }
-
-    subscribe(symbol: string): void {
-        this.subscribedSymbols.add(symbol);
-        this.sendSubscriptionStatus(symbol, 'subscribe');
-    }
-
-    unsubscribe(symbol: string): void {
-        this.subscribedSymbols.delete(symbol);
-        this.sendSubscriptionStatus(symbol, 'unsubscribe');
-    }
-
-    private sendSubscriptionStatus(symbol: string, status: 'subscribe' | 'unsubscribe'): void {
-        if (this.socket?.readyState === WebSocket.OPEN) {
-            this.socket.send(JSON.stringify({ type: status, symbol }));
+    this.stomp = new RxStomp();
+    this.stomp.configure({
+      brokerURL: environment.wsBaseUrl,
+      reconnectDelay: 5000,
+      debug: (msg: string) => {
+        if (!environment.production) {
+          console.log(new Date(), msg);
         }
-    }
+      }
+    });
+    this.stomp.activate();
 
-    disconnect(): void {
-        this.intentionalDisconnect = true;
-        this.socket?.close();
-        this.socket = null;
-        this.subscribedSymbols.clear();
+    this.subscription = this.stomp.watch('/topic/trades').subscribe(msg => {
+      try {
+        const trade = JSON.parse(msg.body);
+        this.lastTrade.set(trade);
+      } catch (e) {
+        console.error('Error parsing trade message:', e);
+      }
+    });
+  }
+
+  subscribe(symbol: string): void {
+    if (!this.stomp?.connected()) {
+      this.connect();
     }
-}
+    // Send subscription request to backend via STOMP
+    this.stomp?.publish({ 
+      destination: '/app/subscribe', 
+      body: symbol.toUpperCase() 
+    });
+  }
+
+  unsubscribe(symbol: string): void {
+    this.stomp?.publish({ 
+      destination: '/app/unsubscribe', 
+      body: symbol.toUpperCase() 
+    });
+  }
+
+  disconnect(): void {
+    this.subscription?.unsubscribe();
+    this.subscription = null;
+    this.stomp?.deactivate();
+    this.stomp = null;
+  }
+
+  ngOnDestroy(): void {
+    this.disconnect();
+  }
+}
